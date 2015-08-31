@@ -3,6 +3,8 @@
 
 #include <exception>
 
+struct _win_st;
+
 namespace nccpp
 {
 
@@ -18,8 +20,36 @@ class Ncurses
 
 	~Ncurses();
 
+	// Input options
+
+	int cbreak(bool);
+	int echo(bool);
+	int halfdelay(int);
+	int intrflush(bool);
+	int keypad(bool);
+	int meta(bool);
+	int nodelay(bool);
+	int raw(bool);
+	void qiflush(bool);
+	int notimeout(bool);
+	void timeout(int);
+	int typeahead(int);
+
+	// Output options
+
+	int clearok(bool, bool = false);
+	int idlok(bool);
+	void idcok(bool);
+	void immedok(bool);
+	int leaveok(bool);
+	int setscrreg(int, int);
+	int scrollok(bool);
+	int nl(bool);
+
 	private:
 	Ncurses();
+
+	_win_st* stdscr_;
 };
 
 Ncurses& ncurses();
