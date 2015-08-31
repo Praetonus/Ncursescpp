@@ -23,7 +23,9 @@ Ncurses& ncurses()
 	return nc;
 }
 
-// Extra parenthesis to protect against potential macro expansion
+// Extra parenthesis may be needed to protect functions against macro expansion
+
+// Input options
 
 int Ncurses::cbreak(bool on)
 {
@@ -85,6 +87,8 @@ int Ncurses::typeahead(int fd)
 	return ::typeahead(fd);
 }
 
+// Output options
+
 int (Ncurses::clearok)(bool on, bool use_cs)
 {
 	return::clearok(use_cs ? curscr : stdscr_, on);
@@ -123,6 +127,90 @@ int (Ncurses::scrollok)(bool on)
 int (Ncurses::nl)(bool on)
 {
 	return on ? ::nl() : nonl();
+}
+
+// Output functions
+
+int (Ncurses::addch)(chtype const ch)
+{
+	return waddch(stdscr_, ch);
+}
+
+int (Ncurses::mvaddch)(int y, int x, chtype const ch)
+{
+	return mvwaddch(stdscr_, y, x, ch);
+}
+
+int (Ncurses::echochar)(chtype const ch)
+{
+	return wechochar(stdscr_, ch);
+}
+
+int Ncurses::printw(char const* fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	auto ret = vw_printw(stdscr_, fmt, args);
+	va_end(args);
+	return ret;
+}
+
+int Ncurses::mvprintw(int y, int x, char const* fmt, ...)
+{
+	if (move(y, x) == ERR)
+		return ERR;
+	va_list args;
+	va_start(args, fmt);
+	auto ret = vw_printw(stdscr_, fmt, args);
+	va_end(args);
+	return ret;
+}
+
+int (Ncurses::addstr)(std::string const& str)
+{
+	return waddstr(stdscr_, str.c_str());
+}
+
+int (Ncurses::addnstr)(std::string const& str, int n)
+{
+	return waddnstr(stdscr_, str.c_str(), n);
+}
+
+int (Ncurses::mvaddstr)(int y, int x, std::string const& str)
+{
+	return mvwaddstr(stdscr_, y, x, str.c_str());
+}
+
+int (Ncurses::mvaddnstr)(int y, int x, std::string const& str, int n)
+{
+	return mvwaddnstr(stdscr_, y, x, str.c_str(), n);
+}
+
+int (Ncurses::addchstr)(String const& chstr)
+{
+	return waddchstr(stdscr_, chstr.c_str());
+}
+
+int (Ncurses::addchnstr)(String const& chstr, int n)
+{
+	return waddchnstr(stdscr_, chstr.c_str(), n);
+}
+
+int (Ncurses::mvaddchstr)(int y, int x, String const& chstr)
+{
+	return mvwaddchstr(stdscr_, y, x, chstr.c_str());
+}
+
+int (Ncurses::mvaddchnstr)(int y, int x, String const& chstr, int n)
+{
+	return mvwaddchnstr(stdscr_, y, x, chstr.c_str(), n);
+}
+
+// Misc
+
+int (Ncurses::move)(int y, int x)
+{
+	return wmove(stdscr_, y, x);
 }
 
 InitError::InitError() noexcept

@@ -2,11 +2,16 @@
 #define NCURSESCPP_NCURSES_HPP_
 
 #include <exception>
+#include <string>
 
+typedef unsigned int chtype;
 struct _win_st;
+typedef _win_st WINDOW;
 
 namespace nccpp
 {
+
+using String = std::basic_string<chtype>;
 
 class Ncurses
 {
@@ -46,10 +51,33 @@ class Ncurses
 	int scrollok(bool);
 	int nl(bool);
 
+	// Output functions
+
+	int addch(chtype const);
+	int mvaddch(int, int, chtype const);
+	int echochar(chtype const);
+
+	int printw(char const*, ...);
+	int mvprintw(int, int, char const*, ...);
+
+	int addstr(std::string const&);
+	int addnstr(std::string const&, int);
+	int mvaddstr(int, int, std::string const&);
+	int mvaddnstr(int, int, std::string const&, int);
+
+	int addchstr(String const&);
+	int addchnstr(String const&, int);
+	int mvaddchstr(int, int, String const&);
+	int mvaddchnstr(int, int, String const&, int);
+
+	// Misc
+
+	int move(int, int);
+
 	private:
 	Ncurses();
 
-	_win_st* stdscr_;
+	WINDOW* stdscr_;
 };
 
 Ncurses& ncurses();
