@@ -51,6 +51,21 @@ class Ncurses
 	int scrollok(bool);
 	int nl(bool);
 
+	// Input functions
+
+	int getch();
+	int mvgetch(int, int);
+	int ungetch(int);
+	int has_key(int);
+
+	int scanw(char const*, ...);
+	int mvscanw(int, int, char const*, ...);
+
+	int getstr(std::string&);
+	int getnstr(std::string&, std::size_t);
+	int mvgetstr(int, int, std::string&);
+	int mvgetnstr(int, int, std::string&, std::size_t);
+
 	// Output functions
 
 	int addch(chtype const);

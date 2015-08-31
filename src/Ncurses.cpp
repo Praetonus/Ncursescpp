@@ -129,6 +129,69 @@ int (Ncurses::nl)(bool on)
 	return on ? ::nl() : nonl();
 }
 
+// Input functions
+
+int (Ncurses::getch)()
+{
+	return wgetch(stdscr_);
+}
+
+int (Ncurses::mvgetch)(int y, int x)
+{
+	return mvwgetch(stdscr_, y, x);
+}
+
+int Ncurses::ungetch(int ch)
+{
+	return ::ungetch(ch);
+}
+
+int Ncurses::has_key(int ch)
+{
+	return ::has_key(ch);
+}
+
+int Ncurses::scanw(char const* fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	auto ret = vw_scanw(stdscr_, const_cast<char*>(fmt), args);
+	va_end(args);
+	return ret;
+}
+
+int Ncurses::mvscanw(int y, int x, char const* fmt, ...)
+{
+	if (move(y, x) == ERR)
+		return ERR;
+	va_list args;
+	va_start(args, fmt);
+	auto ret = vw_scanw(stdscr_, const_cast<char*>(fmt), args);
+	va_end(args);
+	return ret;
+}
+
+int (Ncurses::getstr)(std::string& str)
+{
+	return (this->getnstr)(str, str.size());
+}
+
+int (Ncurses::getnstr)(std::string& str, std::size_t n)
+{
+	str.resize(n);
+	return ::wgetnstr(stdscr_, &str[0], static_cast<int>(n));
+}
+
+int (Ncurses::mvgetstr)(int y, int x, std::string& str)
+{
+	return (this->mvgetnstr)(y, x, str, str.size());
+}
+
+int (Ncurses::mvgetnstr)(int y, int x, std::string& str, std::size_t n)
+{
+	return move(y, x) == ERR ? ERR : (this->getnstr)(str, n);
+}
+
 // Output functions
 
 int (Ncurses::addch)(chtype const ch)
