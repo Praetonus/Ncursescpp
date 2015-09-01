@@ -132,6 +132,23 @@ int Ncurses::has_key(int ch)
 	return ::has_key(ch);
 }
 
+// Misc
+
+int Ncurses::doupdate()
+{
+	return ::doupdate();
+}
+
+int Ncurses::line_count()
+{
+	return LINES;
+}
+
+int Ncurses::column_count()
+{
+	return COLS;
+}
+
 // Window
 
 WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x, Window::Key /*dummy*/)

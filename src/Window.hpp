@@ -76,6 +76,18 @@ class Window
 
 	int move(int, int);
 	
+	int erase();
+	int clear();
+	int clrtobot();
+	int clrtoeol();
+
+	int refresh();
+	int outrefresh();
+	int redraw();
+	int redrawln(int, int);
+
+	int scroll(int = 1);
+
 	protected:
 	struct Key{};
 	

@@ -46,6 +46,12 @@ class Ncurses : public Window
 	int ungetch(int);
 	int has_key(int);
 
+	// Misc
+
+	int doupdate();
+	int line_count();
+	int column_count();
+
 	// Window
 
 	WINDOW* newwin_(int, int, int, int, Window::Key);
