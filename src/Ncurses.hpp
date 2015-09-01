@@ -1,19 +1,12 @@
 #ifndef NCURSESCPP_NCURSES_HPP_
 #define NCURSESCPP_NCURSES_HPP_
 
-#include <exception>
-#include <string>
-
-typedef unsigned int chtype;
-struct _win_st;
-typedef _win_st WINDOW;
+#include "Window.hpp"
 
 namespace nccpp
 {
 
-using String = std::basic_string<chtype>;
-
-class Ncurses
+class Ncurses : public Window
 {
 	friend Ncurses& ncurses();
 	public:
@@ -36,8 +29,6 @@ class Ncurses
 	int nodelay(bool);
 	int raw(bool);
 	void qiflush(bool);
-	int notimeout(bool);
-	void timeout(int);
 	int typeahead(int);
 
 	// Output options
@@ -47,69 +38,29 @@ class Ncurses
 	void idcok(bool);
 	void immedok(bool);
 	int leaveok(bool);
-	int setscrreg(int, int);
 	int scrollok(bool);
 	int nl(bool);
 
 	// Input functions
 
-	int getch();
-	int mvgetch(int, int);
 	int ungetch(int);
 	int has_key(int);
 
-	int scanw(char const*, ...);
-	int mvscanw(int, int, char const*, ...);
+	// Window
 
-	int getstr(std::string&);
-	int getnstr(std::string&, std::size_t);
-	int mvgetstr(int, int, std::string&);
-	int mvgetnstr(int, int, std::string&, std::size_t);
-
-	// Output functions
-
-	int addch(chtype const);
-	int mvaddch(int, int, chtype const);
-	int echochar(chtype const);
-
-	int printw(char const*, ...);
-	int mvprintw(int, int, char const*, ...);
-
-	int addstr(std::string const&);
-	int addnstr(std::string const&, int);
-	int mvaddstr(int, int, std::string const&);
-	int mvaddnstr(int, int, std::string const&, int);
-
-	int addchstr(String const&);
-	int addchnstr(String const&, int);
-	int mvaddchstr(int, int, String const&);
-	int mvaddchnstr(int, int, String const&, int);
-
-	// Misc
-
-	int move(int, int);
+	WINDOW* newwin_(int, int, int, int, Window::Key);
 
 	private:
 	Ncurses();
 
-	WINDOW* stdscr_;
+	// Do not implement
+	void assign(WINDOW*);
+	WINDOW* release();
+	void destroy();
 };
 
 Ncurses& ncurses();
 
-class InitError : public std::exception
-{
-	public:
-	InitError() noexcept;
-
-	InitError(InitError const& cp) noexcept = default;
-	InitError& operator=(InitError const& cp) noexcept = default;
-
-	virtual ~InitError() = default;
-
-	char const* what() const noexcept override;
-};
-
-} // namespace ncpp
+} // namespace nccpp
 
 #endif // Header guard
