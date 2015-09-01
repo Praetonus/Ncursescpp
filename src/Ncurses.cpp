@@ -18,6 +18,9 @@ Ncurses::~Ncurses()
 {
 	endwin();
 	win_ = nullptr;
+#ifdef NO_LEAKS
+	_nc_freeall();
+#endif
 }
 
 Ncurses& ncurses()

@@ -29,12 +29,12 @@ class Window
 	void assign(WINDOW*);
 	void destroy();
 	WINDOW* get_handle();
-	
+
 	// Input options
 
 	int notimeout(bool);
 	void timeout(int);
-	
+
 	// Output options
 
 	int clearok(bool);
