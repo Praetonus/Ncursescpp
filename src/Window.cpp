@@ -133,7 +133,7 @@ int (Window::getnstr)(std::string& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	str.resize(n);
-	return ::wgetnstr(win_, &str[0], static_cast<int>(n));
+	return wgetnstr(win_, &str[0], static_cast<int>(n));
 }
 
 int (Window::mvgetstr)(int y, int x, std::string& str)
@@ -143,8 +143,63 @@ int (Window::mvgetstr)(int y, int x, std::string& str)
 
 int (Window::mvgetnstr)(int y, int x, std::string& str, std::size_t n)
 {
+	return (this->move)(y, x) == ERR ? ERR : (this->getnstr)(str, n);
+}
+
+chtype (Window::inch)()
+{
 	assert(win_ && "Window doesn't manage any object");
-	return move(y, x) == ERR ? ERR : (this->getnstr)(str, n);
+	return winch(win_);
+}
+
+chtype (Window::mvinch)(int y, int x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return mvwinch(win_, y, x);
+}
+
+int (Window::instr)(std::string& str)
+{
+	return (this->innstr)(str, str.size());
+}
+
+int (Window::innstr)(std::string& str, std::size_t n)
+{
+	assert(win_ && "Window doesn't manage any object");
+	str.resize(n);
+	return winnstr(win_, &str[0], static_cast<int>(n));
+}
+
+int (Window::mvinstr)(int y, int x, std::string& str)
+{
+	return (this->mvinnstr)(y, x, str, str.size());
+}
+
+int (Window::mvinnstr)(int y, int x, std::string& str, std::size_t n)
+{
+	return (this->move)(y, x) == ERR ? ERR : (this->innstr)(str, n);
+}
+
+int (Window::inchstr)(String& str)
+{
+	return (this->inchnstr)(str, str.size());
+}
+
+int (Window::inchnstr)(String& str, std::size_t n)
+{
+	assert(win_ && "Window doesn't manage any object");
+	str.resize(n);
+	return winchnstr(win_, &str[0], static_cast<int>(n));
+}
+
+int (Window::mvinchstr)(int y, int x, String& str)
+{
+	return (this->mvinchnstr)(y, x, str, str.size());
+}
+
+int (Window::mvinchnstr)(int y, int x, String& str, std::size_t n)
+{
+	return (this->move)(y, x) == ERR ? ERR : (this->inchnstr)(str, n);
 }
 
 // Output functions
@@ -191,50 +246,87 @@ int Window::mvprintw(int y, int x, char const* fmt, ...)
 
 int (Window::addstr)(std::string const& str)
 {
-	assert(win_ && "Window doesn't manage any object");
-	return waddstr(win_, str.c_str());
+	return (this->addnstr)(str, str.size());
 }
 
-int (Window::addnstr)(std::string const& str, int n)
+int (Window::addnstr)(std::string const& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return waddnstr(win_, str.c_str(), n);
+	assert(n <= str.size());
+	return waddnstr(win_, str.c_str(), static_cast<int>(n));
 }
 
 int (Window::mvaddstr)(int y, int x, std::string const& str)
 {
-	assert(win_ && "Window doesn't manage any object");
-	return mvwaddstr(win_, y, x, str.c_str());
+	return (this->mvaddnstr)(y, x, str, str.size());
 }
 
-int (Window::mvaddnstr)(int y, int x, std::string const& str, int n)
+int (Window::mvaddnstr)(int y, int x, std::string const& str, std::size_t n)
 {
-	assert(win_ && "Window doesn't manage any object");
-	return mvwaddnstr(win_, y, x, str.c_str(), n);
+	return (this->move)(y, x) == ERR ? ERR : (this->addnstr)(str, n);
 }
 
 int (Window::addchstr)(String const& chstr)
 {
-	assert(win_ && "Window doesn't manage any object");
-	return waddchstr(win_, chstr.c_str());
+	return (this->addchnstr)(chstr, chstr.size());
 }
 
-int (Window::addchnstr)(String const& chstr, int n)
+int (Window::addchnstr)(String const& chstr, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return waddchnstr(win_, chstr.c_str(), n);
+	assert(n <= chstr.size());
+	return waddchnstr(win_, chstr.c_str(), static_cast<int>(n));
 }
 
 int (Window::mvaddchstr)(int y, int x, String const& chstr)
 {
-	assert(win_ && "Window doesn't manage any object");
-	return mvwaddchstr(win_, y, x, chstr.c_str());
+	return (this->mvaddchnstr)(y, x, chstr.c_str(), chstr.size());
 }
 
-int (Window::mvaddchnstr)(int y, int x, String const& chstr, int n)
+int (Window::mvaddchnstr)(int y, int x, String const& chstr, std::size_t n)
+{
+	return (this->move)(y, x) ? ERR : (this->addchnstr)(chstr, n);
+}
+
+int (Window::insstr)(std::string const& str)
+{
+	return (this->insnstr)(str, str.size());
+}
+
+int (Window::insnstr)(std::string const& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return mvwaddchnstr(win_, y, x, chstr.c_str(), n);
+	assert(n <= str.size());
+	return winsnstr(win_, str.c_str(), static_cast<int>(n));
+}
+
+int (Window::mvinsstr)(int y, int x, std::string const& str)
+{
+	return (this->mvinsnstr)(y, x, str, str.size());
+}
+
+int (Window::mvinsnstr)(int y, int x, std::string const& str, std::size_t n)
+{
+	return (this->move)(y, x) == ERR ? ERR : (this->insnstr)(str, n);
+}
+
+// Deletion functions
+
+int (Window::delch)()
+{
+	return wdelch(win_);
+}
+
+int (Window::mvdelch)(int y, int x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return mvwdelch(win_, y, x);
+}
+
+int (Window::insdelln)(int n)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return winsdelln(win_, n);
 }
 
 // Misc
@@ -271,6 +363,7 @@ int (Window::clrtoeol)()
 
 int (Window::refresh)()
 {
+	assert(win_ && "Window doesn't manage any object");
 	return wrefresh(win_);
 }
 

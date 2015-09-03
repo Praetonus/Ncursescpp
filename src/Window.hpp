@@ -53,6 +53,19 @@ class Window
 	int mvgetstr(int, int, std::string&);
 	int mvgetnstr(int, int, std::string&, std::size_t);
 
+	chtype inch();
+	chtype mvinch(int, int);
+
+	int instr(std::string&);
+	int innstr(std::string&, std::size_t);
+	int mvinstr(int, int, std::string&);
+	int mvinnstr(int, int, std::string&, std::size_t);
+
+	int inchstr(String&);
+	int inchnstr(String&, std::size_t);
+	int mvinchstr(int, int, String&);
+	int mvinchnstr(int, int, String&, std::size_t);
+
 	// Output functions
 
 	int addch(chtype const);
@@ -63,14 +76,29 @@ class Window
 	int mvprintw(int, int, char const*, ...);
 
 	int addstr(std::string const&);
-	int addnstr(std::string const&, int);
+	int addnstr(std::string const&, std::size_t);
 	int mvaddstr(int, int, std::string const&);
-	int mvaddnstr(int, int, std::string const&, int);
+	int mvaddnstr(int, int, std::string const&, std::size_t);
 
 	int addchstr(String const&);
-	int addchnstr(String const&, int);
+	int addchnstr(String const&, std::size_t);
 	int mvaddchstr(int, int, String const&);
-	int mvaddchnstr(int, int, String const&, int);
+	int mvaddchnstr(int, int, String const&, std::size_t);
+
+	int insch(chtype);
+	int mvinsch(int y, int x, chtype);
+
+	int insstr(std::string const&);
+	int insnstr(std::string const&, std::size_t);
+	int mvinsstr(int, int, std::string const&);
+	int mvinsnstr(int, int, std::string const&, std::size_t);
+
+	// Deletion functions
+
+	int delch();
+	int mvdelch(int, int);
+
+	int insdelln(int);
 
 	// Misc
 
