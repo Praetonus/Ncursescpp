@@ -4,8 +4,9 @@
 #include <string>
 
 struct _win_st;
-typedef _win_st WINDOW;
-typedef unsigned int chtype;
+using WINDOW = _win_st;
+using chtype =  unsigned int;
+using attr_t = chtype;
 
 namespace nccpp
 {
@@ -99,6 +100,18 @@ class Window
 	int mvdelch(int, int);
 
 	int insdelln(int);
+
+	// Attributes
+
+	int attroff(int);
+	int attron(int);
+	int attrset(int);
+
+	int attr_get(attr_t&);
+
+	// TODO Implement when color interfaces are implemented
+	// int chgat(int, attr_t, short);
+	// int mvchgat(int, int, int, attr_t, short);
 
 	// Misc
 
