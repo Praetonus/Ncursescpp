@@ -13,6 +13,8 @@ namespace nccpp
 
 using String = std::basic_string<chtype>;
 
+struct Color;
+
 class Window
 {
 	public:
@@ -108,10 +110,12 @@ class Window
 	int attrset(int);
 
 	int attr_get(attr_t&);
+	int color_get(Color&);
 
-	// TODO Implement when color interfaces are implemented
-	// int chgat(int, attr_t, short);
-	// int mvchgat(int, int, int, attr_t, short);
+	int attr_color_get(attr_t&, Color&);
+
+	int chgat(int, attr_t, Color);
+	int mvchgat(int, int, int, attr_t, Color);
 
 	// Misc
 

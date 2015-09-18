@@ -21,6 +21,31 @@ extern int const chartext;
 
 } // namespace attributes
 
+namespace internal
+{
+
+struct DefaultColor
+{
+	operator short const() const;
+};
+
+} // namespace internal
+
+namespace colors
+{
+
+extern internal::DefaultColor const def;
+extern short const black;
+extern short const red;
+extern short const green;
+extern short const yellow;
+extern short const blue;
+extern short const magenta;
+extern short const cyan;
+extern short const white;
+
+} // namespace colors
+
 } // namespace nccpp
 
 #endif // Header guard

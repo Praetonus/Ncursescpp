@@ -1,7 +1,10 @@
 #ifndef NCURSESCPP_NCURSES_HPP_
 #define NCURSESCPP_NCURSES_HPP_
 
+#include <vector>
+
 #include "Window.hpp"
+#include "Color.hpp"
 
 namespace nccpp
 {
@@ -56,8 +59,23 @@ class Ncurses : public Window
 
 	WINDOW* newwin_(int, int, int, int, Window::Key);
 
+	// Color
+
+	void start_color();
+	int use_default_colors();
+
+	short color_to_pair_number(Color const&);
+	int color_to_attr(Color const&);
+	Color pair_number_to_color(short);
+	Color attr_to_color(attr_t);
+
+	int init_color(short, short, short, short);
+
 	private:
 	Ncurses();
+
+	std::vector<Color> registered_colors_;
+	bool colors_initialized;
 
 	// Do not implement
 	void assign(WINDOW*);
