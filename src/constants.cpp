@@ -2,6 +2,8 @@
 
 #include "Ncurses.hpp"
 
+#include <cassert>
+
 #include <ncurses.h>
 
 namespace nccpp
@@ -54,5 +56,114 @@ short const cyan{COLOR_CYAN};
 short const white{COLOR_WHITE};
 
 } // namespace colors
+
+namespace internal
+{
+
+int FunctionKeys::operator()(int n) const
+{
+	assert(n < 64 && "Function key doesn't exists");
+	return KEY_F0 + n;
+}
+
+} // namespace internal
+
+namespace keys
+{
+
+int const break_k{KEY_BREAK};
+int const sreset{KEY_SRESET};
+int const reset{KEY_RESET};
+int const down{KEY_DOWN};
+int const up{KEY_UP};
+int const left{KEY_LEFT};
+int const right{KEY_RIGHT};
+int const home{KEY_HOME};
+int const backspace{KEY_BACKSPACE};
+internal::FunctionKeys const f{};
+int const dl{KEY_DL};
+int const il{KEY_IL};
+int const dc{KEY_DC};
+int const ic{KEY_IC};
+int const eic{KEY_EIC};
+int const clear{KEY_CLEAR};
+int const eos{KEY_EOS};
+int const eol{KEY_EOL};
+int const sf{KEY_SF};
+int const sr{KEY_SR};
+int const npage{KEY_NPAGE};
+int const ppage{KEY_PPAGE};
+int const stab{KEY_STAB};
+int const ctab{KEY_CTAB};
+int const catab{KEY_CATAB};
+int const enter{KEY_ENTER};
+int const print{KEY_PRINT};
+int const ll{KEY_LL};
+int const a1{KEY_A1};
+int const a3{KEY_A3};
+int const b2{KEY_B2};
+int const c1{KEY_C1};
+int const c3{KEY_C3};
+int const btab{KEY_BTAB};
+int const beg{KEY_BEG};
+int const cancel{KEY_CANCEL};
+int const close{KEY_CLOSE};
+int const command{KEY_COMMAND};
+int const copy{KEY_COPY};
+int const create{KEY_CREATE};
+int const end{KEY_END};
+int const exit{KEY_EXIT};
+int const find{KEY_FIND};
+int const help{KEY_HELP};
+int const mark{KEY_MARK};
+int const message{KEY_MESSAGE};
+int const move{KEY_MOVE};
+int const next{KEY_NEXT};
+int const open{KEY_OPEN};
+int const options{KEY_OPTIONS};
+int const previous{KEY_PREVIOUS};
+int const redo{KEY_REDO};
+int const reference{KEY_REFERENCE};
+int const refresh{KEY_REFRESH};
+int const replace{KEY_REPLACE};
+int const restart{KEY_RESTART};
+int const resume{KEY_RESUME};
+int const save{KEY_SAVE};
+int const sbeg{KEY_SBEG};
+int const scancel{KEY_SCANCEL};
+int const scommand{KEY_SCOMMAND};
+int const scopy{KEY_SCOPY};
+int const screate{KEY_SCREATE};
+int const sdc{KEY_SDC};
+int const sdl{KEY_SDL};
+int const select{KEY_SELECT};
+int const send{KEY_SEND};
+int const seol{KEY_SEOL};
+int const sexit{KEY_SEXIT};
+int const sfind{KEY_SFIND};
+int const shelp{KEY_SHELP};
+int const shome{KEY_SHOME};
+int const sic{KEY_SIC};
+int const sleft{KEY_SLEFT};
+int const smessage{KEY_SMESSAGE};
+int const smove{KEY_SMOVE};
+int const snext{KEY_SNEXT};
+int const soptions{KEY_SOPTIONS};
+int const sprevious{KEY_SPREVIOUS};
+int const sprint{KEY_SPRINT};
+int const sredo{KEY_SREDO};
+int const sreplace{KEY_SREPLACE};
+int const sright{KEY_SRIGHT};
+int const srsume{KEY_SRSUME};
+int const ssave{KEY_SSAVE};
+int const ssuspend{KEY_SSUSPEND};
+int const sundo{KEY_SUNDO};
+int const suspend{KEY_SUSPEND};
+int const undo{KEY_UNDO};
+int const mouse{KEY_MOUSE};
+int const resize{KEY_RESIZE};
+int const event{KEY_EVENT};
+
+} // namespace keys
 
 } // namespace nccpp
