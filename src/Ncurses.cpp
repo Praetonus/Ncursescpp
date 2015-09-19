@@ -55,19 +55,9 @@ int (Ncurses::intrflush)(bool on)
 	return ::intrflush(win_, on);
 }
 
-int Ncurses::keypad(bool on)
-{
-	return ::keypad(win_, on);
-}
-
 int (Ncurses::meta)(bool on)
 {
 	return ::meta(win_, on);
-}
-
-int (Ncurses::nodelay)(bool on)
-{
-	return ::nodelay(win_, on);
 }
 
 int Ncurses::raw(bool on)

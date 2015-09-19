@@ -7,6 +7,16 @@
 namespace nccpp
 {
 
+int Window::keypad(bool on)
+{
+	return ::keypad(win_, on);
+}
+
+int (Window::nodelay)(bool on)
+{
+	return ::nodelay(win_, on);
+}
+
 int (Window::notimeout)(bool on)
 {
 	assert(win_ && "Window doesn't manage any object");

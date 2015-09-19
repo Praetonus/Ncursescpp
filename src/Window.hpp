@@ -35,6 +35,8 @@ class Window
 
 	// Input options
 
+	int keypad(bool);
+	int nodelay(bool);
 	int notimeout(bool);
 	void timeout(int);
 

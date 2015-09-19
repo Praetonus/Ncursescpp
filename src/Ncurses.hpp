@@ -27,9 +27,7 @@ class Ncurses : public Window
 	int echo(bool);
 	int halfdelay(int);
 	int intrflush(bool);
-	int keypad(bool);
 	int meta(bool);
-	int nodelay(bool);
 	int raw(bool);
 	void qiflush(bool);
 	int typeahead(int);
