@@ -133,6 +133,10 @@ class Window
 
 	int scroll(int = 1);
 
+	void getyx(int&, int&);
+	void getbegyx(int&, int&);
+	void getmaxyx(int&, int&);
+
 	protected:
 	struct Key{};
 	
