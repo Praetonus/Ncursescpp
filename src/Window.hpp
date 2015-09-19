@@ -103,6 +103,16 @@ class Window
 
 	int insdelln(int);
 
+	// Border
+
+	int border(chtype, chtype, chtype, chtype, chtype, chtype, chtype, chtype);
+	int box(chtype, chtype);
+
+	int hline(chtype, int);
+	int vline(chtype, int);
+	int mvhline(int, int, chtype, int);
+	int mvvline(int, int, chtype, int);
+
 	// Attributes
 
 	int attroff(int);
