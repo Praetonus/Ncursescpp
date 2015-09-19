@@ -78,7 +78,7 @@ class TooMuchColors : public BaseError
 class NoSuchColor : public BaseError
 {
 	public:
-	NoSuchColor(bool, int) noexcept;
+	NoSuchColor(int, bool) noexcept;
 
 	NoSuchColor(NoSuchColor const&) noexcept = default;
 	NoSuchColor& operator=(NoSuchColor const&) noexcept = default;
@@ -87,8 +87,8 @@ class NoSuchColor : public BaseError
 
 	char const* what() const noexcept override;
 
-	bool is_pair_error;
 	int pair_or_attr;
+	bool is_pair_error;
 };
 
 } // namespace nccpp

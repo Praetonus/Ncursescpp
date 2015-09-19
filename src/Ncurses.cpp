@@ -192,7 +192,7 @@ Color Ncurses::pair_number_to_color(short pair_n)
 {
 	return static_cast<std::size_t>(pair_n) <= registered_colors_.size()
 	       ? registered_colors_[static_cast<std::size_t>(pair_n - 1)]
-	       : throw NoSuchColor{true, pair_n};
+	       : throw NoSuchColor{pair_n, true};
 }
 
 Color Ncurses::attr_to_color(attr_t a)

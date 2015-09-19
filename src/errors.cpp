@@ -32,8 +32,8 @@ char const* TooMuchColors::what() const noexcept
 	return "nccpp::TooMuchColors : Can't initialize new colors, init_pair failed";
 }
 
-NoSuchColor::NoSuchColor(bool ip, int pa) noexcept
-	: is_pair_error{ip}, pair_or_attr{pa}
+NoSuchColor::NoSuchColor(int pa, bool ip) noexcept
+	: pair_or_attr{pa}, is_pair_error{ip}
 {}
 
 char const* NoSuchColor::what() const noexcept
