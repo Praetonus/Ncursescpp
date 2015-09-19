@@ -64,22 +64,4 @@ WINDOW* Window::get_handle()
 	return win_;
 }
 
-void (Window::getyx)(int& y, int& x)
-{
-	assert(win_ && "Window doesn't manage any object");
-	getyx(win_, y, x);
-}
-
-void (Window::getbegyx)(int& y, int& x)
-{
-	assert(win_ && "Window doesn't manage any object");
-	getbegyx(win_, y, x);
-}
-
-void (Window::getmaxyx)(int& y, int& x)
-{
-	assert(win_ && "Window doesn't manage any object");
-	getmaxyx(win_, y, x);
-}
-
 } // namespace nccpp
