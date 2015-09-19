@@ -44,4 +44,22 @@ int (Window::mvvline)(int y, int x, chtype ch, int n)
 	return move(y, x) == ERR ? ERR : (this->vline)(ch, n);
 }
 
+void (Window::bkgdset)(int ch)
+{
+	assert(win_ && "Window doesn't manage any object");
+	wbkgdset(win_, static_cast<chtype>(ch));
+}
+
+int (Window::bkgd)(int ch)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wbkgd(win_, static_cast<chtype>(ch));
+}
+
+chtype (Window::getbkgd)()
+{
+	assert(win_ && "Window doesn't manage any object");
+	return (::getbkgd)(win_);
+}
+
 } // namespace nccpp

@@ -113,6 +113,12 @@ class Window
 	int mvhline(int, int, chtype, int);
 	int mvvline(int, int, chtype, int);
 
+	// Background
+
+	void bkgdset(int);
+	int bkgd(int);
+	chtype getbkgd();
+
 	// Attributes
 
 	int attroff(int);
