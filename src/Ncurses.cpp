@@ -33,6 +33,11 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file Ncurses.cpp
+ * \brief Implementation file for the Ncurses class.
+ */
+
 #include "Ncurses.hpp"
 
 #include <cassert>
@@ -70,41 +75,93 @@ Ncurses& ncurses()
 
 // Input options
 
+/**
+ * \brief Change cbreak mode.
+ * 
+ * \param on If true, call cbreak. Else, call nocbreak.
+ * \return The result of the operation.
+ */
 int Ncurses::cbreak(bool on)
 {
 	return on ? ::cbreak() : nocbreak();
 }
 
+/**
+ * \fn int Ncurses::echo(bool on)
+ * \brief Change echo mode.
+ * 
+ * \param on If true, call echo. Else, call noecho.
+ * \return The result of the operation.
+ */
 int (Ncurses::echo)(bool on)
 {
 	return on ? ::echo() : noecho();
 }
 
+/**
+ * \fn int Ncurses::halfdelay(int delay)
+ * \brief Call halfdelay.
+ * 
+ * \param delay Value to pass on to halfdelay.
+ * \return The result of the operation.
+ */
 int (Ncurses::halfdelay)(int delay)
 {
 	return ::halfdelay(delay);
 }
 
+/**
+ * \fn int Ncurses::intrflush(bool on)
+ * \brief Call intrflush.
+ * 
+ * \param on Value to pass on to intrflush.
+ * \return The result of the operation.
+ */
 int (Ncurses::intrflush)(bool on)
 {
 	return ::intrflush(win_, on);
 }
 
+/**
+ * \fn int Ncurses::meta(bool on)
+ * \brief Call meta.
+ * 
+ * \param on Value to pass on to meta.
+ * \return The result of the operation.
+ */
 int (Ncurses::meta)(bool on)
 {
 	return ::meta(win_, on);
 }
 
+/**
+ * \brief Change raw mode.
+ * 
+ * \param on If true, call raw. Else, call noraw.
+ * \return The result of the operation.
+ */
 int Ncurses::raw(bool on)
 {
 	return on ? ::raw() : noraw();
 }
 
+/**
+ * \fn int Ncurses::qiflush(bool on)
+ * \brief Change qiflush mode.
+ * 
+ * \param on If true, call qiflush. Else, call noquiflush.
+ */
 void (Ncurses::qiflush)(bool on)
 {
 	on ? ::qiflush() : noqiflush();
 }
 
+/**
+ * \brief Call typeahead.
+ * 
+ * \param fd Value to pass on to typeahead.
+ * \return The result of the operation.
+ */
 int Ncurses::typeahead(int fd)
 {
 	return ::typeahead(fd);
@@ -112,36 +169,81 @@ int Ncurses::typeahead(int fd)
 
 // Output options
 
+/**
+ * \fn int Ncurses::clearok(bool on, bool use_cs = false)
+ * \brief Call clearok.
+ * 
+ * \param on Value to pass on to clearok.
+ * \param use_cs If true, call clearok with *curscr* as argument.
+ * \return The result of the operation.
+ */
 int (Ncurses::clearok)(bool on, bool use_cs)
 {
 	return::clearok(use_cs ? curscr : win_, on);
 }
 
+/**
+ * \brief Call idlok.
+ * 
+ * \param on Value to pass on to idlok.
+ * \return The result of the operation.
+ */
 int Ncurses::idlok(bool on)
 {
 	return ::idlok(win_, on);
 }
 
+/**
+ * \fn void Ncurses::idcok(bool on)
+ * \brief Call idcok.
+ * 
+ * \param on Value to pass on to idcok.
+ */
 void (Ncurses::idcok)(bool on)
 {
 	::idcok(win_, on);
 }
 
+/**
+ * \brief Call immedok.
+ * 
+ * \param on Value to pass on to immedok.
+ */
 void Ncurses::immedok(bool on)
 {
 	::immedok(win_, on);
 }
 
+/**
+ * \fn int Ncurses::leaveok(bool on)
+ * \brief Call leaveok.
+ * 
+ * \param on Value to pass on to leaveok.
+ */
 int (Ncurses::leaveok)(bool on)
 {
 	return ::leaveok(win_, on);
 }
 
+/**
+ * \fn int Ncurses::scrollok(bool on)
+ * \brief Call scrollok.
+ * 
+ * \param on Value to pass on to scrollok.
+ * \return The result of the operation.
+ */
 int (Ncurses::scrollok)(bool on)
 {
 	return ::scrollok(win_, on);
 }
 
+/**
+ * \fn int Ncurses::nl(bool on)
+ * \brief Change nl mode.
+ * 
+ * \param on If true, call nl. Else, call nonl.
+ * \return The result of the operation.
+ */
 int (Ncurses::nl)(bool on)
 {
 	return on ? ::nl() : nonl();
@@ -149,11 +251,23 @@ int (Ncurses::nl)(bool on)
 
 // Input functions
 
+/**
+ * \brief Call ungetch.
+ * 
+ * \param ch Value to pass on to ungetch.
+ * \return The result of the operation.
+ */
 int Ncurses::ungetch(int ch)
 {
 	return ::ungetch(ch);
 }
 
+/**
+ * \brief Call has_key.
+ * 
+ * \param ch Value to pass on to has_key.
+ * \return The result of the operation.
+ */
 int Ncurses::has_key(int ch)
 {
 	return ::has_key(ch);
@@ -161,16 +275,31 @@ int Ncurses::has_key(int ch)
 
 // Misc
 
+/**
+ * \brief Call doupdate.
+ * 
+ * \return The result of the operation.
+ */
 int Ncurses::doupdate()
 {
 	return ::doupdate();
 }
 
+/**
+ * \brief Get the height of the terminal.
+ * 
+ * \return The number of lines of the terminal.
+ */
 int Ncurses::line_count()
 {
 	return LINES;
 }
 
+/**
+ * \brief Get the width of the terminal.
+ * 
+ * \return The number of columns of the terminal.
+ */
 int Ncurses::column_count()
 {
 	return COLS;
@@ -185,6 +314,11 @@ WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x, Window
 
 // Color
 
+/**
+ * \brief Start ncurses color mode.
+ * 
+ * \exception ColorInitError Thrown when colors can't be initialized.
+ */
 void Ncurses::start_color()
 {
 	if (colors_initialized)
@@ -194,12 +328,24 @@ void Ncurses::start_color()
 	colors_initialized = true;
 }
 
+/**
+ * \brief Call use_default_colors.
+ * 
+ * \return The result of the operation.
+ */
 int Ncurses::use_default_colors()
 {
 	start_color();
 	return ::use_default_colors();
 }
 
+/**
+ * \brief Get a pair number from a Color.
+ * 
+ * \param color The color to get.
+ * \exception TooMuchColors Thrown if no more color pairs can be registered.
+ * \return The pair number associated with the color.
+ */
 short Ncurses::color_to_pair_number(Color const& color)
 {
 	auto it = std::find_if(std::begin(registered_colors_), std::end(registered_colors_),
@@ -218,11 +364,25 @@ short Ncurses::color_to_pair_number(Color const& color)
 	return static_cast<short>(registered_colors_.size());
 }
 
+/**
+ * \brief Get an attribute character from a Color.
+ * 
+ * \param color The color to get.
+ * \exception TooMuchColors Thrown if no more color pairs can be registered.
+ * \return The attribute associated with the color.
+ */
 int Ncurses::color_to_attr(Color const& color)
 {
 	return static_cast<int>(COLOR_PAIR(color_to_pair_number(color)));
 }
 
+/**
+ * \brief Get a Color from a pair number.
+ * 
+ * \param pair_n The pair number.
+ * \exception NoSuchColor Thrown if the pair isn't registered.
+ * \return The color associated with the pair.
+ */
 Color Ncurses::pair_number_to_color(short pair_n)
 {
 	return static_cast<std::size_t>(pair_n) <= registered_colors_.size()
@@ -230,11 +390,23 @@ Color Ncurses::pair_number_to_color(short pair_n)
 	       : throw NoSuchColor{pair_n, true};
 }
 
+/**
+ * \brief Get a Color from an attribute.
+ * 
+ * \param a The attribute.
+ * \exception NoSuchColor Thrown if the color isn't registered.
+ * \return The color associated with the attribute.
+ */
 Color Ncurses::attr_to_color(attr_t a)
 {
 	return pair_number_to_color(static_cast<short>(PAIR_NUMBER(a)));
 }
 
+/**
+ * \brief Call init_color.
+ * 
+ * \param color,r,g,b Values to pass on to init_color.
+ */
 int Ncurses::init_color(short color, short r, short g, short b)
 {
 	start_color();

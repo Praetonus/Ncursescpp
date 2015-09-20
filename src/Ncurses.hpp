@@ -33,6 +33,11 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file Ncurses.hpp
+ * \brief Header file for the Ncurses class.
+ */
+
 #ifndef NCURSESCPP_NCURSES_HPP_
 #define NCURSESCPP_NCURSES_HPP_
 
@@ -44,10 +49,17 @@
 namespace nccpp
 {
 
+/**
+ * \brief The primary interface class.
+ * 
+ * This class is used to access ncurses features.
+ * It is responsible of the initialization of ncurses.
+ */
 class Ncurses : public Window
 {
 	friend Ncurses& ncurses();
 	public:
+	/// \cond NODOC
 	Ncurses(Ncurses const&) = delete;
 	Ncurses& operator=(Ncurses const&) = delete;
 
@@ -55,6 +67,7 @@ class Ncurses : public Window
 	Ncurses& operator=(Ncurses&&) = delete;
 
 	~Ncurses();
+	/// \endcond
 
 	// Input options
 
@@ -90,7 +103,9 @@ class Ncurses : public Window
 
 	// Window
 
+	/// \cond NODOC
 	WINDOW* newwin_(int, int, int, int, Window::Key);
+	/// \endcond
 
 	// Color
 
@@ -116,6 +131,12 @@ class Ncurses : public Window
 	void destroy();
 };
 
+/**
+ * Access the Ncurses singleton.
+ * 
+ * \exception NcursesInitError Thrown when ncurses can't be initialized.
+ * \return A reference to the singleton.
+ */
 Ncurses& ncurses();
 
 } // namespace nccpp
