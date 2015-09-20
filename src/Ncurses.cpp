@@ -167,10 +167,10 @@ int Ncurses::use_default_colors()
 
 short Ncurses::color_to_pair_number(Color const& color)
 {
-	auto it = std::find_if(std::cbegin(registered_colors_), std::cend(registered_colors_),
-	                       [color](auto const& elem){return color == elem;});
+	auto it = std::find_if(std::begin(registered_colors_), std::end(registered_colors_),
+	                       [color](Color const& elem){return color == elem;});
 	if (it != std::end(registered_colors_))
-		return static_cast<short>(it - std::cbegin(registered_colors_));
+		return static_cast<short>(it - std::begin(registered_colors_));
 
 	start_color();
 	// Ensure push_back will not throw
