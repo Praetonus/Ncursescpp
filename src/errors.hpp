@@ -33,6 +33,11 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file errors.hpp
+ * \brief Header file for exceptions classes.
+ */
+
 #ifndef NCURSESCPP_ERRORS_HPP_
 #define NCURSESCPP_ERRORS_HPP_
 
@@ -43,9 +48,15 @@
 namespace nccpp
 {
 
+/**
+ * \brief Namespace for exceptions classes.
+ */
 namespace errors
 {
 
+/**
+ * \brief %Base ncursescpp exception class.
+ */
 class Base : public std::exception
 {
 	public:
@@ -59,6 +70,9 @@ class Base : public std::exception
 	char const* what() const noexcept override;
 };
 
+/**
+ * \brief Thrown when ncurses can't be initialized.
+ */
 class NcursesInit : public Base
 {
 	public:
@@ -72,6 +86,9 @@ class NcursesInit : public Base
 	char const* what() const noexcept override;
 };
 
+/**
+ * \brief Thrown when window creation fails.
+ */
 class WindowInit : public Base
 {
 	public:
@@ -85,6 +102,9 @@ class WindowInit : public Base
 	char const* what() const noexcept override;
 };
 
+/**
+ * \brief Thrown when color mode can't be initialized.
+ */
 class ColorInit : public Base
 {
 	public:
@@ -98,6 +118,9 @@ class ColorInit : public Base
 	char const* what() const noexcept override;
 };
 
+/**
+ * \brief Thrown when no more color pairs can be registered.
+ */
 class TooMuchColors : public Base
 {
 	public:
@@ -110,7 +133,7 @@ class TooMuchColors : public Base
 
 	char const* what() const noexcept override;
 
-	Color const color;
+	Color const color; ///< The color that caused the error.
 };
 
 } // namespace errors
