@@ -43,59 +43,62 @@
 namespace nccpp
 {
 
-class BaseError : public std::exception
+namespace errors
+{
+
+class Base : public std::exception
 {
 	public:
-	BaseError() noexcept = default;
+	Base() noexcept = default;
 
-	BaseError(BaseError const&) noexcept = default;
-	BaseError& operator=(BaseError const&) noexcept = default;
+	Base(Base const&) noexcept = default;
+	Base& operator=(Base const&) noexcept = default;
 
-	virtual ~BaseError() = default;
+	virtual ~Base() = default;
 
 	char const* what() const noexcept override;
 };
 
-class NcursesInitError : public BaseError
+class NcursesInit : public Base
 {
 	public:
-	NcursesInitError() noexcept = default;
+	NcursesInit() noexcept = default;
 
-	NcursesInitError(NcursesInitError const&) noexcept = default;
-	NcursesInitError& operator=(NcursesInitError const&) noexcept = default;
+	NcursesInit(NcursesInit const&) noexcept = default;
+	NcursesInit& operator=(NcursesInit const&) noexcept = default;
 
-	virtual ~NcursesInitError() = default;
+	virtual ~NcursesInit() = default;
 
 	char const* what() const noexcept override;
 };
 
-class WindowInitError : public BaseError
+class WindowInit : public Base
 {
 	public:
-	WindowInitError() noexcept = default;
+	WindowInit() noexcept = default;
 
-	WindowInitError(WindowInitError const&) noexcept = default;
-	WindowInitError& operator=(WindowInitError const&) noexcept = default;
+	WindowInit(WindowInit const&) noexcept = default;
+	WindowInit& operator=(WindowInit const&) noexcept = default;
 
-	virtual ~WindowInitError() = default;
+	virtual ~WindowInit() = default;
 
 	char const* what() const noexcept override;
 };
 
-class ColorInitError : public BaseError
+class ColorInit : public Base
 {
 	public:
-	ColorInitError() noexcept = default;
+	ColorInit() noexcept = default;
 
-	ColorInitError(ColorInitError const&) noexcept = default;
-	ColorInitError& operator=(ColorInitError const&) noexcept = default;
+	ColorInit(ColorInit const&) noexcept = default;
+	ColorInit& operator=(ColorInit const&) noexcept = default;
 
-	virtual ~ColorInitError() = default;
+	virtual ~ColorInit() = default;
 
 	char const* what() const noexcept override;
 };
 
-class TooMuchColors : public BaseError
+class TooMuchColors : public Base
 {
 	public:
 	TooMuchColors(Color const&) noexcept;
@@ -110,7 +113,7 @@ class TooMuchColors : public BaseError
 	Color const color;
 };
 
-class NoSuchColor : public BaseError
+class NoSuchColor : public Base
 {
 	public:
 	NoSuchColor(int, bool) noexcept;
@@ -125,6 +128,8 @@ class NoSuchColor : public BaseError
 	int pair_or_attr;
 	bool is_pair_error;
 };
+
+} // namespace errors
 
 } // namespace nccpp
 

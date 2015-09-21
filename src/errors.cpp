@@ -38,24 +38,27 @@
 namespace nccpp
 {
 
-char const* BaseError::what() const noexcept
+namespace errors
 {
-	return "nccpp::BaseError";
+
+char const* Base::what() const noexcept
+{
+	return "nccpp::errors::Base";
 }
 
-char const* NcursesInitError::what() const noexcept
+char const* NcursesInit::what() const noexcept
 {
-	return "nccpp::NcursesInitError : Can't initialize ncuses, initscr() failed";
+	return "nccpp::errors::NcursesInit : Can't initialize ncuses, initscr() failed";
 }
 
-char const* WindowInitError::what() const noexcept
+char const* WindowInit::what() const noexcept
 {
-	return "nccpp::WindowInitError : Can't create new window, newwin() failed";
+	return "nccpp::errors::WindowInit : Can't create new window, newwin() failed";
 }
 
-char const* ColorInitError::what() const noexcept
+char const* ColorInit::what() const noexcept
 {
-	return "nccpp::ColorInitError : Can't initialize colors, start_color() failed";
+	return "nccpp::errors::ColorInit : Can't initialize colors, start_color() failed";
 }
 
 TooMuchColors::TooMuchColors(Color const& c) noexcept
@@ -64,7 +67,7 @@ TooMuchColors::TooMuchColors(Color const& c) noexcept
 
 char const* TooMuchColors::what() const noexcept
 {
-	return "nccpp::TooMuchColors : Can't initialize new colors, init_pair failed";
+	return "nccpp::errors::TooMuchColors : Can't initialize new colors, init_pair failed";
 }
 
 NoSuchColor::NoSuchColor(int pa, bool ip) noexcept
@@ -73,7 +76,9 @@ NoSuchColor::NoSuchColor(int pa, bool ip) noexcept
 
 char const* NoSuchColor::what() const noexcept
 {
-	return "nccpp::NoSuchColor : Color is uninitialized";
+	return "nccpp::errors::NoSuchColor : Color is uninitialized";
 }
+
+} // namespace errors
 
 } // namespace nccpp

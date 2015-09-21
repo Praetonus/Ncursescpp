@@ -53,7 +53,7 @@ Ncurses::Ncurses()
 	: Window{initscr()}, registered_colors_{}, colors_initialized{false}
 {
 	if (!win_)
-		throw NcursesInitError{};
+		throw errors::NcursesInit{};
 }
 
 Ncurses::~Ncurses()
@@ -317,14 +317,14 @@ WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x, Window
 /**
  * \brief Start ncurses color mode.
  * 
- * \exception ColorInitError Thrown when colors can't be initialized.
+ * \exception errors::ColorInit Thrown when colors can't be initialized.
  */
 void Ncurses::start_color()
 {
 	if (colors_initialized)
 		return;
 	if (::start_color() == ERR)
-		throw ColorInitError{};
+		throw errors::ColorInit{};
 	colors_initialized = true;
 }
 
@@ -343,7 +343,7 @@ int Ncurses::use_default_colors()
  * \brief Get a pair number from a Color.
  * 
  * \param color The color to get.
- * \exception TooMuchColors Thrown if no more color pairs can be registered.
+ * \exception errors::TooMuchColors Thrown if no more color pairs can be registered.
  * \return The pair number associated with the color.
  */
 short Ncurses::color_to_pair_number(Color const& color)
@@ -359,7 +359,7 @@ short Ncurses::color_to_pair_number(Color const& color)
 	auto res = init_pair(static_cast<short>(registered_colors_.size() + 1),
 	                     color.foreground, color.background);
 	if (res == ERR)
-		throw TooMuchColors{color};
+		throw errors::TooMuchColors{color};
 	registered_colors_.push_back(color);
 	return static_cast<short>(registered_colors_.size());
 }
@@ -368,7 +368,7 @@ short Ncurses::color_to_pair_number(Color const& color)
  * \brief Get an attribute character from a Color.
  * 
  * \param color The color to get.
- * \exception TooMuchColors Thrown if no more color pairs can be registered.
+ * \exception errors::TooMuchColors Thrown if no more color pairs can be registered.
  * \return The attribute associated with the color.
  */
 int Ncurses::color_to_attr(Color const& color)
@@ -380,21 +380,21 @@ int Ncurses::color_to_attr(Color const& color)
  * \brief Get a Color from a pair number.
  * 
  * \param pair_n The pair number.
- * \exception NoSuchColor Thrown if the pair isn't registered.
+ * \exception errors::NoSuchColor Thrown if the pair isn't registered.
  * \return The color associated with the pair.
  */
 Color Ncurses::pair_number_to_color(short pair_n)
 {
 	return static_cast<std::size_t>(pair_n) <= registered_colors_.size()
 	       ? registered_colors_[static_cast<std::size_t>(pair_n - 1)]
-	       : throw NoSuchColor{pair_n, true};
+	       : throw errors::NoSuchColor{pair_n, true};
 }
 
 /**
  * \brief Get a Color from an attribute.
  * 
  * \param a The attribute.
- * \exception NoSuchColor Thrown if the color isn't registered.
+ * \exception errors::NoSuchColor Thrown if the color isn't registered.
  * \return The color associated with the attribute.
  */
 Color Ncurses::attr_to_color(attr_t a)

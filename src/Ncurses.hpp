@@ -134,7 +134,7 @@ class Ncurses : public Window
 /**
  * Access the Ncurses singleton.
  * 
- * \exception NcursesInitError Thrown when ncurses can't be initialized.
+ * \exception errors::NcursesInit Thrown when ncurses can't be initialized.
  * \return A reference to the singleton.
  */
 Ncurses& ncurses();

@@ -66,13 +66,13 @@ Window::Window(WINDOW* win)
  * \param ncols Width of the window.
  * \param begin_y y position of the window.
  * \param begin_x x position of the window.
- * \exception WindowInitError Thrown if the window can't be created.
+ * \exception errors::WindowInit Thrown if the window can't be created.
  */
 Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 	: win_{ncurses().newwin_(nlines, ncols, begin_y, begin_x, Key{})}
 {
 	if (!win_)
-		throw WindowInitError{};
+		throw errors::WindowInit{};
 }
 
 /**
