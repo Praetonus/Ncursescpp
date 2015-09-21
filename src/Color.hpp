@@ -33,19 +33,27 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file Color.hpp
+ * \brief Header file for the Color class.
+ */
+
 #ifndef NCURSESCPP_COLOR_HPP_
 #define NCURSESCPP_COLOR_HPP_
 
 namespace nccpp
 {
 
+/**
+ * \brief Class representing a ncurses color pair.
+ */
 struct Color
 {
 	Color() : Color{-1, -1} {}
 	Color(short f, short b) : foreground{f}, background{b} {}
 
-	short foreground;
-	short background;
+	short foreground; ///< Foreground color.
+	short background; ///< Background color.
 };
 
 inline bool operator==(nccpp::Color const& lhs, nccpp::Color const& rhs)
