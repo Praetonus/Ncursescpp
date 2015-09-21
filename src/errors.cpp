@@ -70,15 +70,6 @@ char const* TooMuchColors::what() const noexcept
 	return "nccpp::errors::TooMuchColors : Can't initialize new colors, init_pair failed";
 }
 
-NoSuchColor::NoSuchColor(int pa, bool ip) noexcept
-	: pair_or_attr{pa}, is_pair_error{ip}
-{}
-
-char const* NoSuchColor::what() const noexcept
-{
-	return "nccpp::errors::NoSuchColor : Color is uninitialized";
-}
-
 } // namespace errors
 
 } // namespace nccpp

@@ -33,8 +33,8 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-#ifndef NCURSESCPP_ERROR_HPP_
-#define NCURSESCPP_ERROR_HPP_
+#ifndef NCURSESCPP_ERRORS_HPP_
+#define NCURSESCPP_ERRORS_HPP_
 
 #include <exception>
 
@@ -111,22 +111,6 @@ class TooMuchColors : public Base
 	char const* what() const noexcept override;
 
 	Color const color;
-};
-
-class NoSuchColor : public Base
-{
-	public:
-	NoSuchColor(int, bool) noexcept;
-
-	NoSuchColor(NoSuchColor const&) noexcept = default;
-	NoSuchColor& operator=(NoSuchColor const&) noexcept = default;
-
-	virtual ~NoSuchColor() = default;
-
-	char const* what() const noexcept override;
-
-	int pair_or_attr;
-	bool is_pair_error;
 };
 
 } // namespace errors

@@ -380,21 +380,20 @@ int Ncurses::color_to_attr(Color const& color)
  * \brief Get a Color from a pair number.
  * 
  * \param pair_n The pair number.
- * \exception errors::NoSuchColor Thrown if the pair isn't registered.
+ * \pre *pair_n* is a valid pair number.
  * \return The color associated with the pair.
  */
 Color Ncurses::pair_number_to_color(short pair_n)
 {
-	return static_cast<std::size_t>(pair_n) <= registered_colors_.size()
-	       ? registered_colors_[static_cast<std::size_t>(pair_n - 1)]
-	       : throw errors::NoSuchColor{pair_n, true};
+	assert(static_cast<std::size_t>(pair_n) <= registered_colors_.size() && "No such color");
+	return registered_colors_[static_cast<std::size_t>(pair_n - 1)];
 }
 
 /**
  * \brief Get a Color from an attribute.
  * 
  * \param a The attribute.
- * \exception errors::NoSuchColor Thrown if the color isn't registered.
+ * \pre The color pair associated with *a* is a valid color attribute.
  * \return The color associated with the attribute.
  */
 Color Ncurses::attr_to_color(attr_t a)
