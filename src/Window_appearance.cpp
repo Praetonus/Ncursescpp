@@ -42,6 +42,14 @@
 namespace nccpp
 {
 
+/**
+ * \fn int Window::border(chtype ls, chtype rs, chtype ts, chtype bs, chtype tl, chtype tr, chtype bl, chtype br)
+ * \brief Call wborder for this window.
+ * 
+ * \param ls,rs,ts,bs,tl,tr,bl,br Values to pass on to wborder.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::border)(chtype ls, chtype rs, chtype ts, chtype bs,
                      chtype tl, chtype tr, chtype bl, chtype br)
 {
@@ -49,48 +57,110 @@ int (Window::border)(chtype ls, chtype rs, chtype ts, chtype bs,
 	return wborder(win_, ls, rs, ts, bs, tl, tr, bl, br);
 }
 
+/**
+ * \fn int Window::box(chtype vch, chtype hch)
+ * \brief Call wbox for this window.
+ * 
+ * \param vch,hch Values to pass on to wbox.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::box)(chtype vch, chtype hch)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return ::box(win_, vch, hch);
 }
 
+/**
+ * \fn int Window::hline(chtype ch, int n)
+ * \brief Call whline for this window.
+ * 
+ * \param ch,n Values to pass on to whline.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::hline)(chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return whline(win_, ch, n);
 }
 
+/**
+ * \fn int Window::vline(chtype ch, int n)
+ * \brief Call wvline for this window.
+ * 
+ * \param ch,n Values to pass on to wvline.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::vline)(chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wvline(win_, ch, n);
 }
 
+/**
+ * \fn int Window::mvhline(int y, int x, chtype ch, int n)
+ * \brief Call mvwhline for this window.
+ * 
+ * \param y,x,ch,n Values to pass on to mvwhline.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvhline)(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return move(y, x) == ERR ? ERR : (this->hline)(ch, n);
 }
 
+/**
+ * \fn int Window::mvvline(int y, int x, chtype ch, int n)
+ * \brief Call mvwvline for this window.
+ * 
+ * \param y,x,ch,n Values to pass on to mvwvline.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvvline)(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return move(y, x) == ERR ? ERR : (this->vline)(ch, n);
 }
 
+/**
+ * \fn void Window::bkgdset(int ch)
+ * \brief Call wbkgdset for this window.
+ * 
+ * \param ch Value to pass on to wbkgdset.
+ * \pre The Window manages a ncurses window.
+ */
 void (Window::bkgdset)(int ch)
 {
 	assert(win_ && "Window doesn't manage any object");
 	wbkgdset(win_, static_cast<chtype>(ch));
 }
 
+/**
+ * \fn int Window::bkgd(int ch)
+ * \brief Call wbkgd for this window.
+ * 
+ * \param ch Values to pass on to wbkgd.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::bkgd)(int ch)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wbkgd(win_, static_cast<chtype>(ch));
 }
 
+/**
+ * \fn chtype Window::getbkgd()
+ * \brief Call getbkgd for this window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The background character.
+ */
 chtype (Window::getbkgd)()
 {
 	assert(win_ && "Window doesn't manage any object");

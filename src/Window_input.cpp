@@ -44,12 +44,27 @@ namespace nccpp
 
 // getch
 
+/**
+ * \fn int Window::getch()
+ * \brief Call wgetch for this window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::getch)()
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wgetch(win_);
 }
 
+/**
+ * \fn int Window::mvgetch(int y, int x)
+ * \brief Call mvwgetch for this window.
+ *
+ * \param y,x Values to pass on to mvwgetch.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvgetch)(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -58,6 +73,13 @@ int (Window::mvgetch)(int y, int x)
 
 // scanw
 
+/**
+ * \brief Call wscanw for this window.
+ * 
+ * \param fmt Value to pass on to wscanw.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int Window::scanw(char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -68,6 +90,13 @@ int Window::scanw(char const* fmt, ...)
 	return ret;
 }
 
+/**
+ * \brief Call mvwscanw for this window.
+ * 
+ * \param y,x,fmt Values to pass on to mvwscanw.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int Window::mvscanw(int y, int x, char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -82,11 +111,30 @@ int Window::mvscanw(int y, int x, char const* fmt, ...)
 
 // getstr
 
+/**
+ * \fn int Window::getstr(std::string& str)
+ * \brief Call wgetnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::getstr)(std::string& str)
 {
 	return (this->getnstr)(str, str.size());
 }
 
+/**
+ * \fn int Window::getnstr(std::string& str, std::size_t n)
+ * \brief Call wgetnstr for this window.
+ * 
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::getnstr)(std::string& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -94,11 +142,32 @@ int (Window::getnstr)(std::string& str, std::size_t n)
 	return wgetnstr(win_, &str[0], static_cast<int>(n));
 }
 
+/**
+ * \fn int Window::mvgetstr(int y, int x, std::string& str)
+ * \brief Call mvwgetnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvgetstr)(int y, int x, std::string& str)
 {
 	return (this->mvgetnstr)(y, x, str, str.size());
 }
 
+/**
+ * \fn int Window::mvgetnstr(int y, int x, std::string& str, std::size_t n)
+ * \brief Call mvwgetnstr for this window.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvgetnstr)(int y, int x, std::string& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->getnstr)(str, n);
@@ -106,12 +175,27 @@ int (Window::mvgetnstr)(int y, int x, std::string& str, std::size_t n)
 
 // inch
 
+/**
+ * \fn chtype Window::inch()
+ * \brief Call winch for this window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 chtype (Window::inch)()
 {
 	assert(win_ && "Window doesn't manage any object");
 	return winch(win_);
 }
 
+/**
+ * \fn chtype Window::mvinch(int y, int x)
+ * \brief Call mvwinch for this window.
+ * 
+ * \param y,x New position.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 chtype (Window::mvinch)(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -120,11 +204,30 @@ chtype (Window::mvinch)(int y, int x)
 
 // instr
 
+/**
+ * \fn int Window::instr(std::string& str)
+ * \brief Call winnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::instr)(std::string& str)
 {
 	return (this->innstr)(str, str.size());
 }
 
+/**
+ * \fn int Window::innstr(std::string& str, std::size_t n)
+ * \brief Call winnstr for this window.
+ * 
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::innstr)(std::string& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -132,11 +235,32 @@ int (Window::innstr)(std::string& str, std::size_t n)
 	return winnstr(win_, &str[0], static_cast<int>(n));
 }
 
+/**
+ * \fn int Window::mvinstr(int y, int x, std::string& str)
+ * \brief Call mvwinnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvinstr)(int y, int x, std::string& str)
 {
 	return (this->mvinnstr)(y, x, str, str.size());
 }
 
+/**
+ * \fn int Window::mvinnstr(int y, int x, std::string& str, std::size_t n)
+ * \brief Call mvwinnstr for this window.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvinnstr)(int y, int x, std::string& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->innstr)(str, n);
@@ -144,11 +268,30 @@ int (Window::mvinnstr)(int y, int x, std::string& str, std::size_t n)
 
 // inchstr
 
+/**
+ * \fn int Window::inchstr(String& str)
+ * \brief Call winchnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::inchstr)(String& str)
 {
 	return (this->inchnstr)(str, str.size());
 }
 
+/**
+ * \fn int Window::inchnstr(String& str, std::size_t n)
+ * \brief Call winchnstr for this window.
+ * 
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::inchnstr)(String& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -156,11 +299,32 @@ int (Window::inchnstr)(String& str, std::size_t n)
 	return winchnstr(win_, &str[0], static_cast<int>(n));
 }
 
+/**
+ * \fn int Window::mvinchstr(int y, int x, String& str)
+ * \brief Call mvwinchnstr for this window.
+ * 
+ * The function reads at most str.size() characters.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvinchstr)(int y, int x, String& str)
 {
 	return (this->mvinchnstr)(y, x, str, str.size());
 }
 
+/**
+ * \fn int Window::mvinchnstr(int y, int x, String& str, std::size_t n)
+ * \brief Call mvwinchnstr for this window.
+ * 
+ * \param y,x New position.
+ * \param[out] str The resulting string.
+ * \param n Number of characters to read.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
 int (Window::mvinchnstr)(int y, int x, String& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->inchnstr)(str, n);

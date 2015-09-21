@@ -33,6 +33,11 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file Window.cpp
+ * \brief Implementation file for the Window class.
+ */
+
 #include "Window.hpp"
 #include "Ncurses.hpp"
 
@@ -45,10 +50,24 @@
 namespace nccpp
 {
 
+/**
+ * \brief Take ownership of an existing ncurses window.
+ * 
+ * \param win The ncurses window. If win is nullptr, the Window created doesn't manage anything.
+ */
 Window::Window(WINDOW* win)
 	: win_{win}
 {}
 
+/**
+ * \brief Create a new ncurses window.
+ * 
+ * \param nlines Height of the window.
+ * \param ncols Width of the window.
+ * \param begin_y y position of the window.
+ * \param begin_x x position of the window.
+ * \exception WindowInitError Thrown if the window can't be created.
+ */
 Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 	: win_{ncurses().newwin_(nlines, ncols, begin_y, begin_x, Key{})}
 {
@@ -56,12 +75,18 @@ Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 		throw WindowInitError{};
 }
 
+/**
+ * \brief Move constructor.
+ */
 Window::Window(Window&& mv) noexcept
 	: win_{mv.win_}
 {
 	mv.win_ = nullptr;
 }
 
+/**
+ * \brief Move assignment operator.
+ */
 Window& Window::operator=(Window&& mv) noexcept
 {
 	if (this != &mv)
@@ -72,11 +97,21 @@ Window& Window::operator=(Window&& mv) noexcept
 	return *this;
 }
 
+/**
+ * \brief Destroy the managed ncurses window, if present.
+ */
 Window::~Window()
 {
 	destroy();
 }
 
+/**
+ * \brief Take ownership of a new ncurses window.
+ * 
+ * If there already is a managed window, destroy it.
+ * 
+ * \param new_win The new window.
+ */
 void Window::assign(WINDOW* new_win)
 {
 	if (win_)
@@ -84,6 +119,9 @@ void Window::assign(WINDOW* new_win)
 	win_ = new_win;
 }
 
+/**
+ * \brief Destroy the managed ncurses window, if present.
+ */
 void Window::destroy()
 {
 	if (win_)
@@ -93,6 +131,12 @@ void Window::destroy()
 	}
 }
 
+/**
+ * \brief Get the managed window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The managed window.
+ */
 WINDOW* Window::get_handle()
 {
 	assert(win_ && "Window doesn't manage any object");

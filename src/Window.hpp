@@ -33,31 +33,44 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file Window.hpp
+ * \brief Header file for the Window class.
+ */
+
 #ifndef NCURSESCPP_WINDOW_HPP_
 #define NCURSESCPP_WINDOW_HPP_
 
 #include <string>
 
+/// \cond NODOC
 struct _win_st;
 using WINDOW = _win_st;
 using chtype =  unsigned int;
 using attr_t = chtype;
+/// \endcond
 
 namespace nccpp
 {
 
+/** \brief Alias used for input functions. */
 using String = std::basic_string<chtype>;
 
 struct Color;
 
+/**
+ * \brief Class managing a ncurses window.
+ */
 class Window
 {
 	public:
 	explicit Window(WINDOW*);
 	Window(int, int, int, int);
 
+	/// \cond NODOC
 	Window(Window const&) = delete;
 	Window& operator=(Window const&) = delete;
+	/// \endcond
 
 	Window(Window&&) noexcept;
 	Window& operator=(Window&&) noexcept;
@@ -191,9 +204,11 @@ class Window
 	void getmaxyx(int&, int&);
 
 	protected:
+	/// \cond NODOC
 	struct Key{};
-	
+
 	WINDOW* win_;
+	/// \endcond
 };
 
 } // namespace nccpp
