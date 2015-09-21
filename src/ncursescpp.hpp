@@ -33,8 +33,18 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file ncursescpp.hpp
+ * \brief Main library header file.
+ */
+
 #ifndef NCURSESCPP_NCURSESCPP_HPP_
 #define NCURSESCPP_NCURSESCPP_HPP_
+
+/**
+ * \namespace nccpp
+ * \brief Main library namespace.
+ */
 
 #include "Ncurses.hpp"
 #include "Color.hpp"
