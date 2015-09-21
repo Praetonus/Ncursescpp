@@ -33,12 +33,20 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
+/**
+ * \file constants.hpp
+ * \brief File declaring various ncurses constants
+ */
+
 #ifndef NCURSESCPP_CONSTANTS_HPP_
 #define NCURSESCPP_CONSTANTS_HPP_
 
 namespace nccpp
 {
 
+/**
+ * \brief Attributes constants
+ */
 namespace attributes
 {
 
@@ -56,6 +64,7 @@ extern int const chartext;
 
 } // namespace attributes
 
+/// \cond nodoc
 namespace internal
 {
 
@@ -65,7 +74,11 @@ struct DefaultColor
 };
 
 } // namespace internal
+/// \endcond
 
+/**
+ * \brief Colors constants
+ */
 namespace colors
 {
 
@@ -81,6 +94,7 @@ extern short const white;
 
 } // namespace colors
 
+/// \cond NODOC
 namespace internal
 {
 
@@ -90,7 +104,11 @@ struct FunctionKeys
 };
 
 }
+/// \endcond
 
+/**
+ * \brief Keys constants
+ */
 namespace keys
 {
 
