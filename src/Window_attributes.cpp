@@ -159,7 +159,7 @@ int (Window::chgat)(int n, attr_t a, Color c)
 int (Window::mvchgat)(int y, int x, int n, attr_t a, Color c)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return move(y, x) == ERR ? ERR : (this->chgat)(n, a, c);
+	return (this->move)(y, x) == ERR ? ERR : (this->chgat)(n, a, c);
 }
 
 } // namespace nccpp

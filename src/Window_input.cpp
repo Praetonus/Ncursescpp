@@ -100,7 +100,7 @@ int Window::scanw(char const* fmt, ...)
 int Window::mvscanw(int y, int x, char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
-	if (move(y, x) == ERR)
+	if ((this->move)(y, x) == ERR)
 		return ERR;
 	va_list args;
 	va_start(args, fmt);

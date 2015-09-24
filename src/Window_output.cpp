@@ -115,7 +115,7 @@ int Window::printw(char const* fmt, ...)
 int Window::mvprintw(int y, int x, char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
-	if (move(y, x) == ERR)
+	if ((this->move)(y, x) == ERR)
 		return ERR;
 	va_list args;
 	va_start(args, fmt);

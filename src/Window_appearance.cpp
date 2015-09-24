@@ -110,7 +110,7 @@ int (Window::vline)(chtype ch, int n)
 int (Window::mvhline)(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return move(y, x) == ERR ? ERR : (this->hline)(ch, n);
+	return (this->move)(y, x) == ERR ? ERR : (this->hline)(ch, n);
 }
 
 /**
@@ -124,7 +124,7 @@ int (Window::mvhline)(int y, int x, chtype ch, int n)
 int (Window::mvvline)(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return move(y, x) == ERR ? ERR : (this->vline)(ch, n);
+	return (this->move)(y, x) == ERR ? ERR : (this->vline)(ch, n);
 }
 
 /**
