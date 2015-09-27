@@ -17,7 +17,7 @@ L'objectif de ncursescpp est de permettre l'utilisation de ncurses à travers un
 
 ## Installation
 
-L'installation de ncursescpp requiert un compilateur supportant le standard C++11 et se fait via [CMake](www.cmake.org).
+L'installation de ncursescpp requiert un compilateur supportant le standard C++11 et se fait via [CMake](http://www.cmake.org).
 
 ## Licence
 
