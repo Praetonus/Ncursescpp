@@ -22,3 +22,7 @@ L'installation de ncursescpp requiert un compilateur supportant le standard C++1
 ## Licence
 
 Ncursescpp est distribué sous licence CeCILL-B (similaire à la licence MIT). Référez-vous au fichier LICENCE ou à http://www.cecill.info pour plus d'informations.
+
+## Documentation
+
+Vous pouvez générer la documentation de ncursescpp avec [Doxygen](http://www.doxygen.org/index.html). Lancez la commande `doxygen Doxyfile` depuis le dossier `doc/` La documentation contient uniquement les informations sur ncursescpp, ncurses étant déjà documenté.
