@@ -76,6 +76,34 @@ Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 }
 
 /**
+ * \brief Copy constructor.
+ * 
+ * \exception errors::WindowInit Thrown if the window can't be duplicated.
+ */
+Window::Window(Window const& cp)
+	: win_{nullptr}
+{
+	if (cp.win_ && !(win_ = dupwin(cp.win_)))
+		throw errors::WindowInit{};
+}
+
+/**
+ * \brief Copy assignment operator.
+ * 
+ * \exception errors::WindowInit Thrown if the window can't be duplicated.
+ */
+Window& Window::operator=(Window const& cp)
+{
+	if (this != &cp)
+	{
+		destroy();
+		if (cp.win_ && !(win_ = dupwin(cp.win_)))
+			throw errors::WindowInit{};
+	}
+	return *this;
+}
+
+/**
  * \brief Move constructor.
  */
 Window::Window(Window&& mv) noexcept

@@ -67,10 +67,8 @@ class Window
 	explicit Window(WINDOW*);
 	Window(int, int, int, int);
 
-	/// \cond NODOC
-	Window(Window const&) = delete;
-	Window& operator=(Window const&) = delete;
-	/// \endcond
+	Window(Window const&);
+	Window& operator=(Window const&);
 
 	Window(Window&&) noexcept;
 	Window& operator=(Window&&) noexcept;
