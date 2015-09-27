@@ -57,6 +57,19 @@ int (Window::move)(int y, int x)
 }
 
 /**
+ * \brief Call mvwin for this window.
+ * 
+ * \param y,x New position.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+int Window::mvwin(int y, int x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return ::mvwin(win_, y, x);
+}
+
+/**
  * \fn int Window::erase()
  * \brief Call werase for this window.
  * 
@@ -209,6 +222,19 @@ void (Window::getmaxyx)(int& y, int& x)
 {
 	assert(win_ && "Window doesn't manage any object");
 	getmaxyx(win_, y, x);
+}
+
+/**
+ * \brief Call wtouchln for this window.
+ * 
+ * \param start,count,changed Values to pass on to wtouchln.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+int Window::touchln(int start, int count, bool changed)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wtouchln(win_, start, count, changed);
 }
 
 } // namespace nccpp

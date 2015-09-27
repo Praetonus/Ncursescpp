@@ -184,6 +184,7 @@ class Window
 	// Misc
 
 	int move(int, int);
+	int mvwin(int, int);
 	
 	int erase();
 	int clear();
@@ -200,6 +201,8 @@ class Window
 	void getyx(int&, int&);
 	void getbegyx(int&, int&);
 	void getmaxyx(int&, int&);
+
+	int touchln(int, int, bool);
 
 	protected:
 	/// \cond NODOC
