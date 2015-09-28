@@ -3,7 +3,7 @@
  #
  # benoit.vey@etu.upmc.fr
  #
- # This software is a libray whose purpose is to provide a RAII-conform
+ # This software is a library whose purpose is to provide a RAII-conform
  # interface over the ncurses library.
  #
  # This software is governed by the CeCILL-B license under French law and
