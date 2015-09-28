@@ -39,6 +39,7 @@
  */
 
 #include "Window.hpp"
+#include "Subwindow.hpp"
 #include "Ncurses.hpp"
 
 #include <cassert>
@@ -56,7 +57,7 @@ namespace nccpp
  * \param win The ncurses window. If win is nullptr, the Window created doesn't manage anything.
  */
 Window::Window(WINDOW* win)
-	: win_{win}
+	: win_{win}, subwindows_{}
 {}
 
 /**
@@ -69,7 +70,8 @@ Window::Window(WINDOW* win)
  * \exception errors::WindowInit Thrown if the window can't be created.
  */
 Window::Window(int nlines, int ncols, int begin_y, int begin_x)
-	: win_{ncurses().newwin_(nlines, ncols, begin_y, begin_x, Key{})}
+	: win_{ncurses().newwin_(nlines, ncols, begin_y, begin_x, Key{})},
+	  subwindows_{}
 {
 	if (!win_)
 		throw errors::WindowInit{};
@@ -81,24 +83,48 @@ Window::Window(int nlines, int ncols, int begin_y, int begin_x)
  * \exception errors::WindowInit Thrown if the window can't be duplicated.
  */
 Window::Window(Window const& cp)
-	: win_{nullptr}
+	: win_{nullptr}, subwindows_{}
 {
 	if (cp.win_ && !(win_ = dupwin(cp.win_)))
 		throw errors::WindowInit{};
+	for (auto& subw : cp.subwindows_)
+	{
+		auto tmp = dupwin(subw.win_);
+		if (!tmp)
+			throw errors::WindowInit{};
+		subwindows_.emplace_back(*this, tmp, Key{});
+	}
 }
 
 /**
  * \brief Copy assignment operator.
  * 
  * \exception errors::WindowInit Thrown if the window can't be duplicated.
+ * If this occurs, the object is left unchanged.
  */
 Window& Window::operator=(Window const& cp)
 {
 	if (this != &cp)
 	{
-		destroy();
-		if (cp.win_ && !(win_ = dupwin(cp.win_)))
+		Window tmp_win{nullptr};
+		if (cp.win_ && !(tmp_win.win_ = dupwin(cp.win_)))
 			throw errors::WindowInit{};
+		for (auto& subw : cp.subwindows_)
+		{
+			auto tmp = dupwin(subw.win_);
+			if (!tmp)
+				throw errors::WindowInit{};
+			try
+			{
+				tmp_win.subwindows_.emplace_back(*this, tmp, Window::Key{});
+			}
+			catch (...)
+			{
+				delwin(tmp);
+				throw;
+			}
+		}
+		*this = std::move(tmp_win);
 	}
 	return *this;
 }
@@ -107,7 +133,7 @@ Window& Window::operator=(Window const& cp)
  * \brief Move constructor.
  */
 Window::Window(Window&& mv) noexcept
-	: win_{mv.win_}
+	: win_{mv.win_}, subwindows_{std::move(mv.subwindows_)}
 {
 	mv.win_ = nullptr;
 }
@@ -119,7 +145,9 @@ Window& Window::operator=(Window&& mv) noexcept
 {
 	if (this != &mv)
 	{
+		destroy();
 		win_ = mv.win_;
+		subwindows_ = std::move(mv.subwindows_);
 		mv.win_ = nullptr;
 	}
 	return *this;
@@ -154,6 +182,7 @@ void Window::destroy()
 {
 	if (win_)
 	{
+		subwindows_.clear();
 		delwin(win_);
 		win_ = nullptr;
 	}
@@ -169,6 +198,38 @@ WINDOW* Window::get_handle()
 {
 	assert(win_ && "Window doesn't manage any object");
 	return win_;
+}
+
+std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	auto new_subw = subwin(win_, lines, cols, beg_y, beg_x);
+	if (!new_subw)
+		throw errors::WindowInit{};
+	try
+	{
+		subwindows_.emplace_back(*this, new_subw, Window::Key{});
+	}
+	catch (...)
+	{
+		delwin(new_subw);
+		throw;
+	}
+	return subwindows_.size() - 1;
+}
+
+Subwindow& Window::get_subwindow(std::size_t index)
+{
+	assert(win_ && "Window doesn't manage any object");
+	assert(index < subwindows_.size() && subwindows_[index].get_handle() && "Invalid subwindow");
+	return subwindows_[index];
+}
+
+void Window::delete_subwindow(std::size_t index)
+{
+	assert(win_ && "Window doesn't manage any object");
+	assert(index < subwindows_.size() && subwindows_[index].get_handle() && "Invalid subwindow");
+	subwindows_[index].destroy();
 }
 
 } // namespace nccpp

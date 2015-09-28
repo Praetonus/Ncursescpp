@@ -42,6 +42,7 @@
 #define NCURSESCPP_WINDOW_HPP_
 
 #include <string>
+#include <vector>
 
 /// \cond NODOC
 struct _win_st;
@@ -57,6 +58,8 @@ namespace nccpp
 using String = std::basic_string<chtype>;
 
 struct Color;
+
+class Subwindow;
 
 /**
  * \brief Class managing a ncurses window.
@@ -78,6 +81,10 @@ class Window
 	void assign(WINDOW*);
 	void destroy();
 	WINDOW* get_handle();
+
+	std::size_t add_subwindow(int, int, int, int);
+	Subwindow& get_subwindow(std::size_t);
+	void delete_subwindow(std::size_t);
 
 	// Input options
 
@@ -210,6 +217,9 @@ class Window
 
 	WINDOW* win_;
 	/// \endcond
+
+	private:
+	std::vector<Subwindow> subwindows_;
 };
 
 } // namespace nccpp

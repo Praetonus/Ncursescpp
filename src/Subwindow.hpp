@@ -34,22 +34,37 @@
  *****/
 
 /**
- * \file ncursescpp.hpp
- * \brief Main library header file.
+ * \file Subwindow.hpp
+ * \brief Header file for the Subwindow class.
  */
 
-#ifndef NCURSESCPP_NCURSESCPP_HPP_
-#define NCURSESCPP_NCURSESCPP_HPP_
+#ifndef NCURSESCPP_SUBWINDOW_HPP_
+#define NCURSESCPP_SUBWINDOW_HPP_
 
-/**
- * \namespace nccpp
- * \brief Main library namespace.
- */
+#include "Window.hpp"
 
-#include "Ncurses.hpp"
-#include "Subwindow.hpp"
-#include "Color.hpp"
-#include "constants.hpp"
-#include "errors.hpp"
+namespace nccpp
+{
+
+class Subwindow : public Window
+{
+	public:
+	Subwindow(Window&, WINDOW*, Window::Key);
+
+	Subwindow(Subwindow const&) = delete;
+	Subwindow& operator=(Subwindow const&) = delete;
+		
+	Subwindow(Subwindow&&) = default;
+	Subwindow& operator=(Subwindow&&) = default;
+
+	~Subwindow() = default;
+
+	Window& get_parent();
+
+	private:
+	Window& parent_;
+};
+
+} // namespace nccpp
 
 #endif // Header guard
