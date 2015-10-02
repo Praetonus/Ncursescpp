@@ -59,6 +59,7 @@ using String = std::basic_string<chtype>;
 
 struct Color;
 
+class Ncurses;
 class Subwindow;
 
 /**
@@ -75,6 +76,16 @@ class Window
 
 	Window(Window&&) noexcept;
 	Window& operator=(Window&&) noexcept;
+
+	Window(Ncurses const&) = delete;
+	Window& operator=(Ncurses const&) = delete;
+	Window(Ncurses&&) = delete;
+	Window& operator=(Ncurses&&) = delete;
+
+	Window(Subwindow const&) = delete;
+	Window& operator=(Subwindow const&) = delete;
+	Window(Subwindow&&) = delete;
+	Window& operator=(Subwindow&&) = delete;
 
 	~Window();
 
