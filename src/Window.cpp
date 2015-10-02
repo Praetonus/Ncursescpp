@@ -186,6 +186,14 @@ WINDOW* Window::get_handle()
 std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
 {
 	assert(win_ && "Window doesn't manage any object");
+#ifndef NDEBUG
+	int posx = 0, posy = 0, maxx = 0, maxy = 0;
+	(this->getbegyx)(posy, posx);
+	(this->getmaxyx)(maxy, maxx);
+	maxy += posy; maxx += posx;
+#endif
+	assert(posy <= beg_y && posx <= beg_x && maxy >= beg_y + lines && maxx >= beg_x + cols &&
+	       "Invalid subwindow coordinates");
 	auto new_subw = subwin(win_, lines, cols, beg_y, beg_x);
 	if (!new_subw)
 		throw errors::WindowInit{};
