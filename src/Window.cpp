@@ -183,6 +183,15 @@ WINDOW* Window::get_handle()
 	return win_;
 }
 
+/**
+ * \brief Create a new subwindow.
+ * 
+ * \param lines,cols,beg_y,beg_x Values to pass on to subwin.
+ * \pre The Window manages a ncurses window.
+ * \pre The function parameters are valid subwindow coodinates.
+ * \exception errors::WindowInit Thrown if the subwindow can't be created.
+ * \return The subwindow index.
+ */
 std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -209,6 +218,14 @@ std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
 	return subwindows_.size() - 1;
 }
 
+/**
+ * \brief Get an existing subwindow.
+ * 
+ * \param index Index of the subwindow.
+ * \pre The Window manages a ncurses window.
+ * \pre *index* is a valid subwindow index.
+ * \return The subwindow.
+ */
 Subwindow& Window::get_subwindow(std::size_t index)
 {
 	assert(win_ && "Window doesn't manage any object");
@@ -216,6 +233,16 @@ Subwindow& Window::get_subwindow(std::size_t index)
 	return subwindows_[index];
 }
 
+/**
+ * \brief Destroy a subwindow.
+ * 
+ * References obtained by calling get_subwindow(index) shouldn't be used after calling this function.
+ * References to other subwindows are not invalidated.
+ * 
+ * \param index Index of the subwindow.
+ * \pre The Window manages a ncurses window.
+ * \pre *index* is a valid subwindow index.
+ */
 void Window::delete_subwindow(std::size_t index)
 {
 	assert(win_ && "Window doesn't manage any object");

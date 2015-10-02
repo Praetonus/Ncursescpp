@@ -77,6 +77,7 @@ class Window
 	Window(Window&&) noexcept;
 	Window& operator=(Window&&) noexcept;
 
+	/// \cond NODOC
 	Window(Ncurses const&) = delete;
 	Window& operator=(Ncurses const&) = delete;
 	Window(Ncurses&&) = delete;
@@ -86,6 +87,7 @@ class Window
 	Window& operator=(Subwindow const&) = delete;
 	Window(Subwindow&&) = delete;
 	Window& operator=(Subwindow&&) = delete;
+	/// \endcond
 
 	~Window();
 

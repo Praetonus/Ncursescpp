@@ -46,9 +46,13 @@
 namespace nccpp
 {
 
+/**
+ * \brief Class managing a subwindow.
+ */
 class Subwindow : public Window
 {
 	public:
+	/// \cond NODOC
 	Subwindow(Window&, WINDOW*, Window::Key);
 
 	Subwindow(Subwindow const&) = delete;
@@ -56,10 +60,18 @@ class Subwindow : public Window
 		
 	Subwindow(Subwindow&&) = default;
 	Subwindow& operator=(Subwindow&&) = default;
+	/// \endcond
 
 	~Subwindow() = default;
 
 	Window& get_parent();
+
+	int mvderwin(int, int);
+
+	void syncup();
+	int syncok(bool);
+	void cursyncup();
+	void syncdown();
 
 	private:
 	Window& parent_;

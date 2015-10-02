@@ -8,6 +8,7 @@ Ncurses features supported by ncursescpp :
 * Keyboard input
 * Colors and attributes
 * Windows
+* Subwindows
 
 Ncursescpp is still WIP and more features will be added.
 

@@ -42,6 +42,8 @@
 
 #include <cassert>
 
+#include <ncurses.h>
+
 namespace nccpp
 {
 
@@ -49,10 +51,75 @@ Subwindow::Subwindow(Window& parent, WINDOW* subwin, Window::Key /*dummy*/)
 	: Window{subwin}, parent_{parent}
 {}
 
+/**
+ * \brief Get the parent of the subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ * \return A reference to the parent.
+ */
 Window& Subwindow::get_parent()
 {
 	assert(win_ && "Invalid subwindow");
 	return parent_;
+}
+
+/**
+ * \brief Call mvderwin for this subwindow.
+ * 
+ * \param y,x Values to pass on to mvderwin.
+ * \pre The Subwindow manages a ncurses window.
+ * \return The result of the operation.
+ */
+int Subwindow::mvderwin(int y, int x)
+{
+	assert(win_ && "Invalid subwindow");
+	return ::mvderwin(win_, y, x);
+}
+
+/**
+ * \brief Call wsyncup for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+void Subwindow::syncup()
+{
+	assert(win_ && "Invalid subwindow");
+	wsyncup(win_);
+}
+
+/**
+ * \fn Subwindow::syncok(bool on)
+ * \brief Call syncok for this subwindow.
+ * 
+ * \param on Value to pass on to syncok.
+ * \pre The Subwindow manages a ncurses window.
+ */
+int (Subwindow::syncok)(bool on)
+{
+	assert(win_ && "Invalid subwindow");
+	return ::syncok(win_, on);
+}
+
+/**
+ * \brief Call wcursyncup for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+void Subwindow::cursyncup()
+{
+	assert(win_ && "Invalid subwindow");
+	wcursyncup(win_);
+}
+
+/**
+ * \brief Call wsyncdown for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+void Subwindow::syncdown()
+{
+	assert(win_ && "Invalid subwindow");
+	wsyncdown(win_);
 }
 
 } // namespace nccpp

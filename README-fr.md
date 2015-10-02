@@ -8,6 +8,7 @@ Les fonctionnalités de ncurses supportées par ncursescpp sont :
 * Saisie clavier
 * Couleurs et attributs
 * Fenêtres
+* Sous-fenêtres
 
 Ncursescpp est en développement et des fonctionnalités supplémentaires seront ajoutées au fur et à mesure.
 
