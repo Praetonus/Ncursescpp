@@ -38,69 +38,62 @@
 
 #include <cassert>
 
-#include <ncurses.h>
-
 namespace nccpp
 {
 
 /**
- * \fn int Window::attroff(int a)
  * \brief Call wattroff for this window.
  * 
  * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::attroff)(int a)
+int Window::attroff(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wattroff(win_, a);
 }
 
 /**
- * \fn int Window::attron(int a)
  * \brief Call wattron for this window.
  * 
  * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::attron)(int a)
+int Window::attron(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wattron(win_, a);
 }
 
 /**
- * \fn int Window::attrset(int a)
  * \brief Call wattrset for this window.
  * 
  * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::attrset)(int a)
+int Window::attrset(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wattrset(win_, a);
 }
 
 /**
- * \fn int Window::attr_get(attr_t& a)
  * \brief Get the attributes of the window.
  * 
  * \param[out] a Reference to store the attributes.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::attr_get)(attr_t& a)
+int Window::attr_get(attr_t& a)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return (wattr_get)(win_, &a, nullptr, nullptr);
+	return wattr_get(win_, &a, nullptr, nullptr);
 }
 
 /**
- * \fn int Window::color_get(Color& c)
  * \brief Get the color of the window.
  * 
  * \param[out] c Reference to store the color.
@@ -111,14 +104,13 @@ int Window::color_get(Color& c)
 {
 	assert(win_ && "Window doesn't manage any object");
 	short pair_n{0};
-	if ((wattr_get)(win_, nullptr, &pair_n, nullptr) == ERR)
+	if (wattr_get(win_, nullptr, &pair_n, nullptr) == ERR)
 		return ERR;
 	c = ncurses().pair_number_to_color(pair_n);
 	return OK;
 }
 
 /**
- * \fn int Window::attr_color_get(Color& c)
  * \brief Get the attributes and the color of the window.
  * 
  * \param[out] a Reference to store the attributes.
@@ -130,33 +122,31 @@ int Window::attr_color_get(attr_t& a, Color& c)
 {
 	assert(win_ && "Window doesn't manage any object");
 	short pair_n{0};
-	if ((wattr_get)(win_, &a, &pair_n, nullptr) == ERR)
+	if (wattr_get(win_, &a, &pair_n, nullptr) == ERR)
 		return ERR;
 	c = ncurses().pair_number_to_color(pair_n);
 	return OK;
 }
 
 /**
- * \fn int Window::chgat(int n, attr_t a, Color c)
  * \brief Call wchgat for this window.
  * \param n,a,c Values to pass on to wchgat.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::chgat)(int n, attr_t a, Color c)
+int Window::chgat(int n, attr_t a, Color c)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return ::wchgat(win_, n, a, ncurses().color_to_pair_number(c), nullptr);
 }
 
 /**
- * \fn int Window::mvchgat(int y, int x, int n, attr_t a, Color c)
  * \brief Call mvwchgat for this window.
  * \param y,x,n,a,c Values to pass on to mvwchgat.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::mvchgat)(int y, int x, int n, attr_t a, Color c)
+int Window::mvchgat(int y, int x, int n, attr_t a, Color c)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return (this->move)(y, x) == ERR ? ERR : (this->chgat)(n, a, c);

@@ -41,6 +41,10 @@
 #ifndef NCURSESCPP_CONSTANTS_HPP_
 #define NCURSESCPP_CONSTANTS_HPP_
 
+#include "Ncurses.hpp"
+
+#include <cassert>
+
 namespace nccpp
 {
 
@@ -70,7 +74,16 @@ namespace internal
 
 struct DefaultColor
 {
-	operator short const() const;
+	operator short const() const
+	{
+		static bool init_done{false};
+		if (!init_done)
+		{
+			ncurses().use_default_colors();
+			init_done = true;
+		}
+		return -1;
+	}
 };
 
 } // namespace internal
@@ -100,7 +113,11 @@ namespace internal
 
 struct FunctionKeys
 {
-	int operator()(int) const;
+	int operator()(int n) const
+	{
+		assert(n < 64 && "Function key doesn't exists");
+		return KEY_F0 + n;
+	}
 };
 
 }

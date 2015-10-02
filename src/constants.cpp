@@ -35,12 +35,6 @@
 
 #include "constants.hpp"
 
-#include "Ncurses.hpp"
-
-#include <cassert>
-
-#include <ncurses.h>
-
 namespace nccpp
 {
 
@@ -61,22 +55,6 @@ int const chartext{A_CHARTEXT};
 
 } // namespace attributes
 
-namespace internal
-{
-
-DefaultColor::operator const short() const
-{
-	static bool init_done{false};
-	if (!init_done)
-	{
-		ncurses().use_default_colors();
-		init_done = true;
-	}
-	return -1;
-}
-
-} // namespace internal
-
 namespace colors
 {
 
@@ -91,17 +69,6 @@ short const cyan{COLOR_CYAN};
 short const white{COLOR_WHITE};
 
 } // namespace colors
-
-namespace internal
-{
-
-int FunctionKeys::operator()(int n) const
-{
-	assert(n < 64 && "Function key doesn't exists");
-	return KEY_F0 + n;
-}
-
-} // namespace internal
 
 namespace keys
 {

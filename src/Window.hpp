@@ -44,12 +44,11 @@
 #include <string>
 #include <vector>
 
-/// \cond NODOC
-struct _win_st;
-using WINDOW = _win_st;
-using chtype =  unsigned int;
-using attr_t = chtype;
-/// \endcond
+#ifndef NCURSES_NOMACROS
+#define NCURSES_NOMACROS
+#endif
+
+#include <ncurses.h>
 
 namespace nccpp
 {
@@ -218,9 +217,9 @@ class Window
 
 	int scroll(int = 1);
 
-	void getyx(int&, int&);
-	void getbegyx(int&, int&);
-	void getmaxyx(int&, int&);
+	void get_yx(int&, int&);
+	void get_begyx(int&, int&);
+	void get_maxyx(int&, int&);
 
 	int touchln(int, int, bool);
 

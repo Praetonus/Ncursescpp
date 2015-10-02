@@ -38,11 +38,10 @@
  * \brief Implementation file for the Ncurses class.
  */
 
+
 #include "Ncurses.hpp"
 
 #include <cassert>
-
-#include <ncurses.h>
 
 #include "errors.hpp"
 
@@ -71,8 +70,6 @@ Ncurses& ncurses()
 	return nc;
 }
 
-// Extra parenthesis may be needed to protect functions against macro expansion
-
 // Input options
 
 /**
@@ -87,49 +84,45 @@ int Ncurses::cbreak(bool on)
 }
 
 /**
- * \fn int Ncurses::echo(bool on)
  * \brief Change echo mode.
  * 
  * \param on If true, call echo. Else, call noecho.
  * \return The result of the operation.
  */
-int (Ncurses::echo)(bool on)
+int Ncurses::echo(bool on)
 {
 	return on ? ::echo() : noecho();
 }
 
 /**
- * \fn int Ncurses::halfdelay(int delay)
  * \brief Call halfdelay.
  * 
  * \param delay Value to pass on to halfdelay.
  * \return The result of the operation.
  */
-int (Ncurses::halfdelay)(int delay)
+int Ncurses::halfdelay(int delay)
 {
 	return ::halfdelay(delay);
 }
 
 /**
- * \fn int Ncurses::intrflush(bool on)
  * \brief Call intrflush.
  * 
  * \param on Value to pass on to intrflush.
  * \return The result of the operation.
  */
-int (Ncurses::intrflush)(bool on)
+int Ncurses::intrflush(bool on)
 {
 	return ::intrflush(win_, on);
 }
 
 /**
- * \fn int Ncurses::meta(bool on)
  * \brief Call meta.
  * 
  * \param on Value to pass on to meta.
  * \return The result of the operation.
  */
-int (Ncurses::meta)(bool on)
+int Ncurses::meta(bool on)
 {
 	return ::meta(win_, on);
 }
@@ -146,12 +139,11 @@ int Ncurses::raw(bool on)
 }
 
 /**
- * \fn int Ncurses::qiflush(bool on)
  * \brief Change qiflush mode.
  * 
  * \param on If true, call qiflush. Else, call noquiflush.
  */
-void (Ncurses::qiflush)(bool on)
+void Ncurses::qiflush(bool on)
 {
 	on ? ::qiflush() : noqiflush();
 }
@@ -170,14 +162,13 @@ int Ncurses::typeahead(int fd)
 // Output options
 
 /**
- * \fn int Ncurses::clearok(bool on, bool use_cs = false)
  * \brief Call clearok.
  * 
  * \param on Value to pass on to clearok.
  * \param use_cs If true, call clearok with *curscr* as argument.
  * \return The result of the operation.
  */
-int (Ncurses::clearok)(bool on, bool use_cs)
+int Ncurses::clearok(bool on, bool use_cs)
 {
 	return::clearok(use_cs ? curscr : win_, on);
 }
@@ -194,12 +185,11 @@ int Ncurses::idlok(bool on)
 }
 
 /**
- * \fn void Ncurses::idcok(bool on)
  * \brief Call idcok.
  * 
  * \param on Value to pass on to idcok.
  */
-void (Ncurses::idcok)(bool on)
+void Ncurses::idcok(bool on)
 {
 	::idcok(win_, on);
 }
@@ -215,36 +205,33 @@ void Ncurses::immedok(bool on)
 }
 
 /**
- * \fn int Ncurses::leaveok(bool on)
  * \brief Call leaveok.
  * 
  * \param on Value to pass on to leaveok.
  */
-int (Ncurses::leaveok)(bool on)
+int Ncurses::leaveok(bool on)
 {
 	return ::leaveok(win_, on);
 }
 
 /**
- * \fn int Ncurses::scrollok(bool on)
  * \brief Call scrollok.
  * 
  * \param on Value to pass on to scrollok.
  * \return The result of the operation.
  */
-int (Ncurses::scrollok)(bool on)
+int Ncurses::scrollok(bool on)
 {
 	return ::scrollok(win_, on);
 }
 
 /**
- * \fn int Ncurses::nl(bool on)
  * \brief Change nl mode.
  * 
  * \param on If true, call nl. Else, call nonl.
  * \return The result of the operation.
  */
-int (Ncurses::nl)(bool on)
+int Ncurses::nl(bool on)
 {
 	return on ? ::nl() : nonl();
 }
@@ -398,7 +385,7 @@ Color Ncurses::pair_number_to_color(short pair_n)
  */
 Color Ncurses::attr_to_color(attr_t a)
 {
-	return pair_number_to_color(static_cast<short>(PAIR_NUMBER(a)));
+	return pair_number_to_color(static_cast<short>(PAIR_NUMBER(static_cast<int>(a))));
 }
 
 /**

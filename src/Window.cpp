@@ -44,8 +44,6 @@
 
 #include <cassert>
 
-#include <ncurses.h>
-
 #include "errors.hpp"
 
 namespace nccpp
@@ -197,8 +195,8 @@ std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
 	assert(win_ && "Window doesn't manage any object");
 #ifndef NDEBUG
 	int posx = 0, posy = 0, maxx = 0, maxy = 0;
-	(this->getbegyx)(posy, posx);
-	(this->getmaxyx)(maxy, maxx);
+	get_begyx(posy, posx);
+	get_maxyx(maxy, maxx);
 	maxy += posy; maxx += posx;
 #endif
 	assert(posy <= beg_y && posx <= beg_x && maxy >= beg_y + lines && maxx >= beg_x + cols &&

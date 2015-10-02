@@ -42,8 +42,6 @@
 
 #include <cassert>
 
-#include <ncurses.h>
-
 namespace nccpp
 {
 
@@ -88,13 +86,12 @@ void Subwindow::syncup()
 }
 
 /**
- * \fn Subwindow::syncok(bool on)
  * \brief Call syncok for this subwindow.
  * 
  * \param on Value to pass on to syncok.
  * \pre The Subwindow manages a ncurses window.
  */
-int (Subwindow::syncok)(bool on)
+int Subwindow::syncok(bool on)
 {
 	assert(win_ && "Invalid subwindow");
 	return ::syncok(win_, on);

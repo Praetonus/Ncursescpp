@@ -37,8 +37,6 @@
 
 #include <cassert>
 
-#include <ncurses.h>
-
 namespace nccpp
 {
 
@@ -56,69 +54,64 @@ int Window::keypad(bool on)
 }
 
 /**
- * \fn int Window::nodelay(bool on)
  * \brief Call nodelay for this window.
  * 
  * \param on Value to pass on to nodelay.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::nodelay)(bool on)
+int Window::nodelay(bool on)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return ::nodelay(win_, on);
 }
 
 /**
- * \fn int Window::notimeout(bool on)
  * \brief Call notimeout for this window.
  * 
  * \param on Value to pass on to notimeout.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::notimeout)(bool on)
+int Window::notimeout(bool on)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return ::notimeout(win_, on);
 }
 
 /**
- * \fn void Window::timeout(int delay)
  * \brief Call timeout for this window.
  * 
  * \param delay Value to pass on to timeout.
  * \pre The Window manages a ncurses window.
  */
-void (Window::timeout)(int delay)
+void Window::timeout(int delay)
 {
 	assert(win_ && "Window doesn't manage any object");
 	wtimeout(win_, delay);
 }
 
 /**
- * \fn int Window::clearok(bool on)
  * \brief Call clearok for this window.
  * 
  * \param on Value to pass on to clearok.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::clearok)(bool on)
+int Window::clearok(bool on)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return ::clearok(win_, on);
 }
 
 /**
- * \fn int Window::setscrreg(int top, int bot)
  * \brief Call wsetscrreg for this window.
  * 
  * \param top,bot Value to pass on to wsetscrreg.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int (Window::setscrreg)(int top, int bot)
+int Window::setscrreg(int top, int bot)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wsetscrreg(win_, top, bot);
