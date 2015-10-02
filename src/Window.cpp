@@ -106,25 +106,8 @@ Window& Window::operator=(Window const& cp)
 {
 	if (this != &cp)
 	{
-		Window tmp_win{nullptr};
-		if (cp.win_ && !(tmp_win.win_ = dupwin(cp.win_)))
-			throw errors::WindowInit{};
-		for (auto& subw : cp.subwindows_)
-		{
-			auto tmp = dupwin(subw.win_);
-			if (!tmp)
-				throw errors::WindowInit{};
-			try
-			{
-				tmp_win.subwindows_.emplace_back(*this, tmp, Window::Key{});
-			}
-			catch (...)
-			{
-				delwin(tmp);
-				throw;
-			}
-		}
-		*this = std::move(tmp_win);
+		Window tmp{cp};
+		*this = std::move(tmp);
 	}
 	return *this;
 }
