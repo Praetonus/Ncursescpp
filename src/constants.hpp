@@ -224,6 +224,114 @@ int constexpr event{KEY_EVENT};
 
 } // namespace keys
 
+/// \cond NODOC
+namespace internal
+{
+
+struct ButtonRelease
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_RELEASE(event, button);
+	}
+};
+
+struct ButtonPress
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_PRESS(event, button);
+	}
+};
+
+struct ButtonClick
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_CLICK(event, button);
+	}
+};
+
+struct ButtonDoubleClick
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_DOUBLE_CLICK(event, button);
+	}
+};
+
+struct ButtonTripleClick
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_TRIPLE_CLICK(event, button);
+	}
+};
+
+struct ButtonReserved
+{
+	mmask_t operator()(mmask_t event, unsigned char button) const
+	{
+		return BUTTON_RESERVED_EVENT(event, button);
+	}
+};
+
+}
+/// \endcond
+
+/**
+ * \brief Mouse constants
+ */
+namespace mouse
+{
+
+int constexpr button1_pressed{BUTTON1_PRESSED};
+int constexpr button1_released{BUTTON1_RELEASED};
+int constexpr button1_clicked{BUTTON1_CLICKED};
+int constexpr button1_double_clicked{BUTTON1_DOUBLE_CLICKED};
+int constexpr button1_triple_clicked{BUTTON1_TRIPLE_CLICKED};
+int constexpr button2_pressed{BUTTON2_PRESSED};
+int constexpr button2_released{BUTTON2_RELEASED};
+int constexpr button2_clicked{BUTTON2_CLICKED};
+int constexpr button2_double_clicked{BUTTON2_DOUBLE_CLICKED};
+int constexpr button2_triple_clicked{BUTTON2_TRIPLE_CLICKED};
+int constexpr button3_pressed{BUTTON3_PRESSED};
+int constexpr button3_released{BUTTON3_RELEASED};
+int constexpr button3_clicked{BUTTON3_CLICKED};
+int constexpr button3_double_clicked{BUTTON3_DOUBLE_CLICKED};
+int constexpr button3_triple_clicked{BUTTON3_TRIPLE_CLICKED};
+int constexpr button4_pressed{BUTTON4_PRESSED};
+int constexpr button4_released{BUTTON4_RELEASED};
+int constexpr button4_clicked{BUTTON4_CLICKED};
+int constexpr button4_double_clicked{BUTTON4_DOUBLE_CLICKED};
+int constexpr button4_triple_clicked{BUTTON4_TRIPLE_CLICKED};
+#if NCURSES_MOUSE_VERSION > 1
+int constexpr button5_pressed{BUTTON5_PRESSED};
+int constexpr button5_released{BUTTON5_RELEASED};
+int constexpr button5_clicked{BUTTON5_CLICKED};
+int constexpr button5_double_clicked{BUTTON5_DOUBLE_CLICKED};
+int constexpr button5_triple_clicked{BUTTON5_TRIPLE_CLICKED};
+#else
+int constexpr button1_reserved_event{BUTTON1_RESERVED_EVENT};
+int constexpr button2_reserved_event{BUTTON2_RESERVED_EVENT};
+int constexpr button3_reserved_event{BUTTON3_RESERVED_EVENT};
+int constexpr button4_reserved_event{BUTTON4_RESERVED_EVENT};
+#endif
+int constexpr button_ctrl{BUTTON_CTRL};
+int constexpr button_shift{BUTTON_SHIFT};
+int constexpr button_alt{BUTTON_ALT};
+int constexpr report_mouse_position{REPORT_MOUSE_POSITION};
+int constexpr all{ALL_MOUSE_EVENTS};
+
+static internal::ButtonRelease const release{};
+static internal::ButtonPress const press{};
+static internal::ButtonClick const click{};
+static internal::ButtonDoubleClick const double_click{};
+static internal::ButtonTripleClick const triple_click{};
+static internal::ButtonReserved const reserved_event{};
+
+}
+
 } // namespace nccpp
 
 #endif // Header guard

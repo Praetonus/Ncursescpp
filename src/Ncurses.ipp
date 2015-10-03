@@ -306,6 +306,72 @@ inline int Ncurses::column_count()
 	return COLS;
 }
 
+// Mouse
+
+/**
+ * \brief Call has_mouse.
+ * 
+ * \pre %Ncurses mode is on.
+ * \return True if the mouse is availiable.
+ */
+inline bool Ncurses::has_mouse()
+{
+	assert(!is_exit_ && "Ncurses mode is off");
+	return ::has_mouse();
+}
+
+/**
+ * \brief Call getmouse.
+ * 
+ * \param[out] event Event to store the data.
+ * \pre %Ncurses mode is on.
+ * \return The result of the operation.
+ */
+inline int Ncurses::getmouse(MEVENT& event)
+{
+	assert(!is_exit_ && "Ncurses mode is off");
+	return ::getmouse(&event);
+}
+
+/**
+ * \brief Call ungetmouse.
+ * 
+ * \param event Event to store.
+ * \pre %Ncurses mode is on.
+ * \return The result of the operation.
+ */
+inline int Ncurses::ungetmouse(MEVENT& event)
+{
+	assert(!is_exit_ && "Ncurses mode is off");
+	return ::ungetmouse(&event);
+}
+
+/**
+ * \brief Call mousemask.
+ * 
+ * \param newmask,oldmask Values to pass on to mousemask.
+ * \pre %Ncurses mode is on.
+ * \return The mask of availiable events.
+ */
+inline mmask_t Ncurses::mousemask(mmask_t newmask, mmask_t* oldmask)
+{
+	assert(!is_exit_ && "Ncurses mode is off");
+	return ::mousemask(newmask, oldmask);
+}
+
+/**
+ * \brief Call mouseinterval.
+ * 
+ * \param erval Value to pass on to mouseinterval.
+ * \pre %Ncurses mode is on.
+ * \return The result of the operation.
+ */
+inline int Ncurses::mouseinterval(int erval)
+{
+	assert(!is_exit_ && "Ncurses mode is off");
+	return ::mouseinterval(erval);
+}
+
 // Window
 
 inline WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x, Window::Key /*dummy*/)

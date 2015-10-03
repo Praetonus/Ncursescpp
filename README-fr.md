@@ -5,7 +5,7 @@ Une interface C++ à ncurses respectant le RAII.
 Les fonctionnalités de ncurses supportées par ncursescpp sont :
 
 * Affichage de texte
-* Saisie clavier
+* Entrées clavier et souris
 * Couleurs et attributs
 * Fenêtres
 * Sous-fenêtres

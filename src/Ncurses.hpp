@@ -112,6 +112,14 @@ class Ncurses : public Window
 	int line_count();
 	int column_count();
 
+	// Mouse
+
+	bool has_mouse();
+	int getmouse(MEVENT&);
+	int ungetmouse(MEVENT&);
+	mmask_t mousemask(mmask_t, mmask_t* = nullptr);
+	int mouseinterval(int);
+
 	// Window
 
 	/// \cond NODOC

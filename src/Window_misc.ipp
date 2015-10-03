@@ -224,6 +224,33 @@ inline int Window::touchln(int start, int count, bool changed)
 	return wtouchln(win_, start, count, changed);
 }
 
+/**
+ * \brief Call wenclose for this window.
+ * 
+ * \param y,x Values to pass on to wenclose.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline bool Window::enclose(int y, int x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wenclose(win_, y, x);
+}
+
+/**
+ * \brief Call wmouse_trafo for this window.
+ * 
+ * \param[out] y,x Resulting coordinates.
+ * \param to_screen If true, convert from window to screen. If false, convert from screen to window.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline bool Window::coord_trafo(int& y, int& x, bool to_screen)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wmouse_trafo(win_, &y, &x, to_screen);
+}
+
 } // namespace nccpp
 
 #endif // Header guard

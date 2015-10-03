@@ -223,6 +223,9 @@ class Window
 
 	int touchln(int, int, bool);
 
+	bool enclose(int, int);
+	bool coord_trafo(int&, int&, bool);
+
 	protected:
 	/// \cond NODOC
 	struct Key{};

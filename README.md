@@ -5,7 +5,7 @@ A RAII-conform C++ ncurses wrapper.
 Ncurses features supported by ncursescpp :
 
 * Text output
-* Keyboard input
+* Keyboard and mouse input
 * Colors and attributes
 * Windows
 * Subwindows
