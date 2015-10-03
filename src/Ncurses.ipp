@@ -50,10 +50,12 @@ namespace nccpp
  * \brief Change cbreak mode.
  * 
  * \param on If true, call cbreak. Else, call nocbreak.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::cbreak(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return on ? ::cbreak() : nocbreak();
 }
 
@@ -61,10 +63,12 @@ inline int Ncurses::cbreak(bool on)
  * \brief Change echo mode.
  * 
  * \param on If true, call echo. Else, call noecho.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::echo(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return on ? ::echo() : noecho();
 }
 
@@ -72,10 +76,12 @@ inline int Ncurses::echo(bool on)
  * \brief Call halfdelay.
  * 
  * \param delay Value to pass on to halfdelay.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::halfdelay(int delay)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::halfdelay(delay);
 }
 
@@ -83,10 +89,12 @@ inline int Ncurses::halfdelay(int delay)
  * \brief Call intrflush.
  * 
  * \param on Value to pass on to intrflush.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::intrflush(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::intrflush(win_, on);
 }
 
@@ -94,10 +102,12 @@ inline int Ncurses::intrflush(bool on)
  * \brief Call meta.
  * 
  * \param on Value to pass on to meta.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::meta(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::meta(win_, on);
 }
 
@@ -105,10 +115,12 @@ inline int Ncurses::meta(bool on)
  * \brief Change raw mode.
  * 
  * \param on If true, call raw. Else, call noraw.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::raw(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return on ? ::raw() : noraw();
 }
 
@@ -116,9 +128,11 @@ inline int Ncurses::raw(bool on)
  * \brief Change qiflush mode.
  * 
  * \param on If true, call qiflush. Else, call noquiflush.
+ * \pre %Ncurses mode is on.
  */
 inline void Ncurses::qiflush(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	on ? ::qiflush() : noqiflush();
 }
 
@@ -126,10 +140,12 @@ inline void Ncurses::qiflush(bool on)
  * \brief Call typeahead.
  * 
  * \param fd Value to pass on to typeahead.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::typeahead(int fd)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::typeahead(fd);
 }
 
@@ -140,10 +156,12 @@ inline int Ncurses::typeahead(int fd)
  * 
  * \param on Value to pass on to clearok.
  * \param use_cs If true, call clearok with *curscr* as argument.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::clearok(bool on, bool use_cs)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return::clearok(use_cs ? curscr : win_, on);
 }
 
@@ -151,10 +169,12 @@ inline int Ncurses::clearok(bool on, bool use_cs)
  * \brief Call idlok.
  * 
  * \param on Value to pass on to idlok.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::idlok(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::idlok(win_, on);
 }
 
@@ -162,9 +182,11 @@ inline int Ncurses::idlok(bool on)
  * \brief Call idcok.
  * 
  * \param on Value to pass on to idcok.
+ * \pre %Ncurses mode is on.
  */
 inline void Ncurses::idcok(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	::idcok(win_, on);
 }
 
@@ -172,9 +194,11 @@ inline void Ncurses::idcok(bool on)
  * \brief Call immedok.
  * 
  * \param on Value to pass on to immedok.
+ * \pre %Ncurses mode is on.
  */
 inline void Ncurses::immedok(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	::immedok(win_, on);
 }
 
@@ -182,9 +206,11 @@ inline void Ncurses::immedok(bool on)
  * \brief Call leaveok.
  * 
  * \param on Value to pass on to leaveok.
+ * \pre %Ncurses mode is on.
  */
 inline int Ncurses::leaveok(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::leaveok(win_, on);
 }
 
@@ -192,10 +218,12 @@ inline int Ncurses::leaveok(bool on)
  * \brief Call scrollok.
  * 
  * \param on Value to pass on to scrollok.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::scrollok(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::scrollok(win_, on);
 }
 
@@ -203,10 +231,12 @@ inline int Ncurses::scrollok(bool on)
  * \brief Change nl mode.
  * 
  * \param on If true, call nl. Else, call nonl.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::nl(bool on)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return on ? ::nl() : nonl();
 }
 
@@ -216,10 +246,12 @@ inline int Ncurses::nl(bool on)
  * \brief Call ungetch.
  * 
  * \param ch Value to pass on to ungetch.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::ungetch(int ch)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::ungetch(ch);
 }
 
@@ -227,10 +259,12 @@ inline int Ncurses::ungetch(int ch)
  * \brief Call has_key.
  * 
  * \param ch Value to pass on to has_key.
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::has_key(int ch)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::has_key(ch);
 }
 
@@ -239,30 +273,36 @@ inline int Ncurses::has_key(int ch)
 /**
  * \brief Call doupdate.
  * 
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::doupdate()
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return ::doupdate();
 }
 
 /**
  * \brief Get the height of the terminal.
  * 
+ * \pre %Ncurses mode is on.
  * \return The number of lines of the terminal.
  */
 inline int Ncurses::line_count()
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return LINES;
 }
 
 /**
  * \brief Get the width of the terminal.
  * 
+ * \pre %Ncurses mode is on.
  * \return The number of columns of the terminal.
  */
 inline int Ncurses::column_count()
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return COLS;
 }
 
@@ -270,6 +310,7 @@ inline int Ncurses::column_count()
 
 inline WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x, Window::Key /*dummy*/)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return newwin(nlines, ncols, begin_y, begin_x);
 }
 
@@ -278,10 +319,12 @@ inline WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x,
 /**
  * \brief Start ncurses color mode.
  * 
+ * \pre %Ncurses mode is on.
  * \exception errors::ColorInit Thrown when colors can't be initialized.
  */
 inline void Ncurses::start_color()
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	if (colors_initialized)
 		return;
 	if (::start_color() == ERR)
@@ -292,10 +335,12 @@ inline void Ncurses::start_color()
 /**
  * \brief Call use_default_colors.
  * 
+ * \pre %Ncurses mode is on.
  * \return The result of the operation.
  */
 inline int Ncurses::use_default_colors()
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	start_color();
 	return ::use_default_colors();
 }
@@ -304,11 +349,13 @@ inline int Ncurses::use_default_colors()
  * \brief Get a pair number from a Color.
  * 
  * \param color The color to get.
+ * \pre %Ncurses mode is on.
  * \exception errors::TooMuchColors Thrown if no more color pairs can be registered.
  * \return The pair number associated with the color.
  */
 inline short Ncurses::color_to_pair_number(Color const& color)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	auto it = std::find_if(std::begin(registered_colors_), std::end(registered_colors_),
 	                       [color](Color const& elem){return color == elem;});
 	if (it != std::end(registered_colors_))
@@ -329,11 +376,13 @@ inline short Ncurses::color_to_pair_number(Color const& color)
  * \brief Get an attribute character from a Color.
  * 
  * \param color The color to get.
+ * \pre %Ncurses mode is on.
  * \exception errors::TooMuchColors Thrown if no more color pairs can be registered.
  * \return The attribute associated with the color.
  */
 inline attr_t Ncurses::color_to_attr(Color const& color)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return static_cast<attr_t>(COLOR_PAIR(color_to_pair_number(color)));
 }
 
@@ -341,11 +390,13 @@ inline attr_t Ncurses::color_to_attr(Color const& color)
  * \brief Get a Color from a pair number.
  * 
  * \param pair_n The pair number.
+ * \pre %Ncurses mode is on.
  * \pre *pair_n* is a valid pair number.
  * \return The color associated with the pair.
  */
 inline Color Ncurses::pair_number_to_color(short pair_n)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	assert(static_cast<std::size_t>(pair_n) <= registered_colors_.size() && "No such color");
 	return registered_colors_[static_cast<std::size_t>(pair_n - 1)];
 }
@@ -354,21 +405,25 @@ inline Color Ncurses::pair_number_to_color(short pair_n)
  * \brief Get a Color from an attribute.
  * 
  * \param a The attribute.
+ * \pre %Ncurses mode is on.
  * \pre The color pair associated with *a* is a valid color attribute.
  * \return The color associated with the attribute.
  */
 inline Color Ncurses::attr_to_color(attr_t a)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	return pair_number_to_color(static_cast<short>(PAIR_NUMBER(static_cast<int>(a))));
 }
 
 /**
  * \brief Call init_color.
  * 
+ * \pre %Ncurses mode is on.
  * \param color,r,g,b Values to pass on to init_color.
  */
 inline int Ncurses::init_color(short color, short r, short g, short b)
 {
+	assert(!is_exit_ && "Ncurses mode is off");
 	start_color();
 	return ::init_color(color, r, g, b);
 }

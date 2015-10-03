@@ -77,6 +77,9 @@ class Ncurses : public Window
 	~Ncurses();
 	/// \endcond
 
+	void exit_ncurses_mode();
+	void resume_ncurses_mode();
+
 	// Input options
 
 	int cbreak(bool);
@@ -113,6 +116,9 @@ class Ncurses : public Window
 
 	/// \cond NODOC
 	WINDOW* newwin_(int, int, int, int, Window::Key);
+#ifndef NDEBUG
+	void register_window_(Window&, Window::Key);
+#endif
 	/// \endcond
 
 	// Color
@@ -131,6 +137,10 @@ class Ncurses : public Window
 	Ncurses();
 
 	std::vector<Color> registered_colors_;
+#ifndef NDEBUG
+	std::vector<Window*> windows_;
+	bool is_exit_;
+#endif
 	bool colors_initialized;
 
 	// Do not implement

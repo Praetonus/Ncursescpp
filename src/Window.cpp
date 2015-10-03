@@ -59,8 +59,17 @@ namespace nccpp
  * \param win The ncurses window. If win is nullptr, the Window created doesn't manage anything.
  */
 Window::Window(WINDOW* win)
-	: win_{win}, subwindows_{}
-{}
+	: win_{win},
+#ifndef NDEBUG
+	  win_save_{nullptr},
+#endif
+	  subwindows_{}
+{
+#ifndef NDEBUG
+	if (win_ != stdscr)
+		ncurses().register_window_(*this, Key{});
+#endif
+}
 
 /**
  * \brief Create a new ncurses window.
@@ -69,39 +78,69 @@ Window::Window(WINDOW* win)
  * \param ncols Width of the window.
  * \param begin_y y position of the window.
  * \param begin_x x position of the window.
+ * \pre %Ncurses mode is on.
  * \exception errors::WindowInit Thrown if the window can't be created.
  */
 Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 	: win_{ncurses().newwin_(nlines, ncols, begin_y, begin_x, Key{})},
+#ifndef NDEBUG
+	  win_save_{nullptr},
+#endif
 	  subwindows_{}
 {
 	if (!win_)
 		throw errors::WindowInit{};
+#ifndef NDEBUG
+	try
+	{
+		ncurses().register_window_(*this, Key{});
+	}
+	catch (...)
+	{
+		delwin(win_);
+		throw;
+	}
+#endif
 }
 
 /**
  * \brief Copy constructor.
  * 
+ * Subwindows are not copied.
+ * 
+ * \pre %Ncurses mode is on.
  * \exception errors::WindowInit Thrown if the window can't be duplicated.
  */
 Window::Window(Window const& cp)
-	: win_{nullptr}, subwindows_{}
+	: win_{nullptr},
+#ifndef NDEBUG
+	  win_save_{nullptr},
+#endif
+	  subwindows_{}
 {
+	assert(!cp.win_save_ && "Can't duplicate windows while ncurses mode is off");
 	subwindows_.reserve(cp.subwindows_.size());
 	if (cp.win_ && !(win_ = dupwin(cp.win_)))
 		throw errors::WindowInit{};
-	for (auto& subw : cp.subwindows_)
+#ifndef NDEBUG
+	try
 	{
-		auto tmp = dupwin(subw.win_);
-		if (!tmp)
-			throw errors::WindowInit{};
-		subwindows_.emplace_back(*this, tmp, Key{});
+		ncurses().register_window_(*this, Key{});
 	}
+	catch (...)
+	{
+		delwin(win_);
+		throw;
+	}
+#endif
 }
 
 /**
  * \brief Copy assignment operator.
  * 
+ * Subwindows are not copied.
+ * 
+ * \pre %Ncurses mode is on.
  * \exception errors::WindowInit Thrown if the window can't be duplicated.
  * If this occurs, the object is left unchanged.
  */
@@ -119,7 +158,11 @@ Window& Window::operator=(Window const& cp)
  * \brief Move constructor.
  */
 Window::Window(Window&& mv) noexcept
-	: win_{mv.win_}, subwindows_{std::move(mv.subwindows_)}
+	: win_{mv.win_},
+#ifndef NDEBUG
+	  win_save_{nullptr},
+#endif
+	  subwindows_{std::move(mv.subwindows_)}
 {
 	mv.win_ = nullptr;
 }
@@ -153,9 +196,11 @@ Window::~Window()
  * If there already is a managed window, destroy it.
  * 
  * \param new_win The new window.
+ * \pre %Ncurses mode is on.
  */
 void Window::assign(WINDOW* new_win)
 {
+	assert(!win_save_ && "Can't modify window while ncurses mode is off");
 	if (win_)
 		destroy();
 	win_ = new_win;
@@ -172,6 +217,14 @@ void Window::destroy()
 		delwin(win_);
 		win_ = nullptr;
 	}
+#ifndef NDEBUG
+	else if (win_save_)
+	{
+		subwindows_.clear();
+		delwin(win_save_);
+		win_save_ = nullptr;
+	}
+#endif
 }
 
 /**
@@ -224,6 +277,22 @@ void Window::delete_subwindow(std::size_t index)
 	assert(win_ && "Window doesn't manage any object");
 	assert(index < subwindows_.size() && subwindows_[index].win_ && "Invalid subwindow");
 	subwindows_[index].destroy();
+}
+
+void Window::invalidate_for_exit_(Window::Key /*dummy*/)
+{
+	for (auto& elem : subwindows_)
+		elem.invalidate_for_exit_(Key{});
+	win_save_ = win_;
+	win_ = nullptr;
+}
+
+void Window::validate_for_resume_(Window::Key /*dummy*/)
+{
+	for (auto& elem : subwindows_)
+		elem.validate_for_resume_(Key{});
+	win_ = win_save_;
+	win_save_ = nullptr;
 }
 
 } // namespace nccpp

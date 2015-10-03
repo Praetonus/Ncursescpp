@@ -230,6 +230,15 @@ class Window
 	WINDOW* win_;
 	/// \endcond
 
+#ifndef NDEBUG
+	/// \cond NODOC
+	WINDOW* win_save_;
+	public:
+	void invalidate_for_exit_(Key);
+	void validate_for_resume_(Key);
+	/// \endcond
+#endif
+
 	private:
 	std::vector<Subwindow> subwindows_;
 };

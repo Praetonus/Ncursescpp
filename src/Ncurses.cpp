@@ -48,7 +48,11 @@ namespace nccpp
 {
 
 Ncurses::Ncurses()
-	: Window{initscr()}, registered_colors_{}, colors_initialized{false}
+	: Window{initscr()}, registered_colors_{},
+#ifndef NDEBUG
+	  windows_{}, is_exit_{false},
+#endif
+	  colors_initialized{false}
 {
 	if (!win_)
 		throw errors::NcursesInit{};
@@ -61,6 +65,47 @@ Ncurses::~Ncurses()
 #ifdef NO_LEAKS
 	_nc_freeall();
 #endif
+}
+
+#ifndef NDEBUG
+void Ncurses::register_window_(Window& new_win, Window::Key /*dummy*/)
+{
+	windows_.push_back(&new_win);
+}
+#endif
+
+/**
+ * \brief Exit ncurses mode and restore normal terminal properties.
+ * 
+ * \pre %Ncurses mode is on.
+ */
+void Ncurses::exit_ncurses_mode()
+{
+	assert(!is_exit_ && "Ncurses mode is already off");
+#ifndef NDEBUG
+	for (auto elem : windows_)
+		elem->invalidate_for_exit_(Window::Key{});
+	invalidate_for_exit_(Key{});
+	is_exit_ = true;
+#endif
+	endwin();
+}
+
+/**
+ * \brief Restore ncurses mode after a call to exit_ncurses_mode().
+ * 
+ * \pre %Ncurses mode is off.
+ */
+void Ncurses::resume_ncurses_mode()
+{
+	assert(is_exit_ && "Ncurses mode is already on");
+#ifndef NDEBUG
+	for (auto elem : windows_)
+		elem->validate_for_resume_(Window::Key{});
+	validate_for_resume_(Key{});
+	is_exit_ = false;
+#endif
+	doupdate();
 }
 
 } // namespace nccpp

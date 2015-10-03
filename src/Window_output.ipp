@@ -187,7 +187,7 @@ inline int Window::mvaddnstr(int y, int x, std::string const& str, std::size_t n
  * 
  * The function prints str.size() characters.
  * 
- * \param str The string to print.
+ * \param chstr The string to print.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
@@ -199,7 +199,7 @@ inline int Window::addchstr(String const& chstr)
 /**
  * \brief Call waddchnstr for this window.
  * 
- * \param str The string to print.
+ * \param chstr The string to print.
  * \param n Number of characters to print.
  * \pre The Window manages a ncurses window.
  * \pre n <= str.size()
@@ -218,7 +218,7 @@ inline int Window::addchnstr(String const& chstr, std::size_t n)
  * The function prints str.size() characters.
  * 
  * \param y,x New position.
- * \param str The string to print.
+ * \param chstr The string to print.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
@@ -231,7 +231,7 @@ inline int Window::mvaddchstr(int y, int x, String const& chstr)
  * \brief Call mvwaddchnstr for this window.
  * 
  * \param y,x New position.
- * \param str The string to print.
+ * \param chstr The string to print.
  * \param n Number of characters to print.
  * \pre The Window manages a ncurses window.
  * \pre n <= str.size()
