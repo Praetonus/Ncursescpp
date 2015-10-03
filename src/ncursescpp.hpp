@@ -46,7 +46,7 @@
  * \brief Main library namespace.
  */
 
-#include "Ncurses.hpp"
+#include "Window.hpp"
 #include "Subwindow.hpp"
 #include "Color.hpp"
 #include "constants.hpp"

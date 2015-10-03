@@ -33,9 +33,8 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-#include "Window.hpp"
-
-#include <cassert>
+#ifndef NCURSESCPP_WINDOW_INPUT_IPP_
+#define NCURSESCPP_WINDOW_INPUT_IPP_
 
 namespace nccpp
 {
@@ -48,7 +47,7 @@ namespace nccpp
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::getch()
+inline int Window::getch()
 {
 	assert(win_ && "Window doesn't manage any object");
 	return wgetch(win_);
@@ -61,7 +60,7 @@ int Window::getch()
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvgetch(int y, int x)
+inline int Window::mvgetch(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return mvwgetch(win_, y, x);
@@ -76,7 +75,7 @@ int Window::mvgetch(int y, int x)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::scanw(char const* fmt, ...)
+inline int Window::scanw(char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
 	va_list args;
@@ -93,7 +92,7 @@ int Window::scanw(char const* fmt, ...)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvscanw(int y, int x, char const* fmt, ...)
+inline int Window::mvscanw(int y, int x, char const* fmt, ...)
 {
 	assert(win_ && "Window doesn't manage any object");
 	if ((this->move)(y, x) == ERR)
@@ -116,7 +115,7 @@ int Window::mvscanw(int y, int x, char const* fmt, ...)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::getstr(std::string& str)
+inline int Window::getstr(std::string& str)
 {
 	return (this->getnstr)(str, str.size());
 }
@@ -129,7 +128,7 @@ int Window::getstr(std::string& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::getnstr(std::string& str, std::size_t n)
+inline int Window::getnstr(std::string& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	str.resize(n);
@@ -146,7 +145,7 @@ int Window::getnstr(std::string& str, std::size_t n)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvgetstr(int y, int x, std::string& str)
+inline int Window::mvgetstr(int y, int x, std::string& str)
 {
 	return (this->mvgetnstr)(y, x, str, str.size());
 }
@@ -160,7 +159,7 @@ int Window::mvgetstr(int y, int x, std::string& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvgetnstr(int y, int x, std::string& str, std::size_t n)
+inline int Window::mvgetnstr(int y, int x, std::string& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->getnstr)(str, n);
 }
@@ -173,7 +172,7 @@ int Window::mvgetnstr(int y, int x, std::string& str, std::size_t n)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-chtype Window::inch()
+inline chtype Window::inch()
 {
 	assert(win_ && "Window doesn't manage any object");
 	return winch(win_);
@@ -186,7 +185,7 @@ chtype Window::inch()
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-chtype Window::mvinch(int y, int x)
+inline chtype Window::mvinch(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
 	return mvwinch(win_, y, x);
@@ -203,7 +202,7 @@ chtype Window::mvinch(int y, int x)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::instr(std::string& str)
+inline int Window::instr(std::string& str)
 {
 	return (this->innstr)(str, str.size());
 }
@@ -216,7 +215,7 @@ int Window::instr(std::string& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::innstr(std::string& str, std::size_t n)
+inline int Window::innstr(std::string& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	str.resize(n);
@@ -233,7 +232,7 @@ int Window::innstr(std::string& str, std::size_t n)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvinstr(int y, int x, std::string& str)
+inline int Window::mvinstr(int y, int x, std::string& str)
 {
 	return (this->mvinnstr)(y, x, str, str.size());
 }
@@ -247,7 +246,7 @@ int Window::mvinstr(int y, int x, std::string& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvinnstr(int y, int x, std::string& str, std::size_t n)
+inline int Window::mvinnstr(int y, int x, std::string& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->innstr)(str, n);
 }
@@ -263,7 +262,7 @@ int Window::mvinnstr(int y, int x, std::string& str, std::size_t n)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::inchstr(String& str)
+inline int Window::inchstr(String& str)
 {
 	return (this->inchnstr)(str, str.size());
 }
@@ -276,7 +275,7 @@ int Window::inchstr(String& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::inchnstr(String& str, std::size_t n)
+inline int Window::inchnstr(String& str, std::size_t n)
 {
 	assert(win_ && "Window doesn't manage any object");
 	str.resize(n);
@@ -293,7 +292,7 @@ int Window::inchnstr(String& str, std::size_t n)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvinchstr(int y, int x, String& str)
+inline int Window::mvinchstr(int y, int x, String& str)
 {
 	return (this->mvinchnstr)(y, x, str, str.size());
 }
@@ -307,9 +306,11 @@ int Window::mvinchstr(int y, int x, String& str)
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvinchnstr(int y, int x, String& str, std::size_t n)
+inline int Window::mvinchnstr(int y, int x, String& str, std::size_t n)
 {
 	return (this->move)(y, x) == ERR ? ERR : (this->inchnstr)(str, n);
 }
 
-}
+} // namespace nccpp
+
+#endif // Header guard

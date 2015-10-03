@@ -41,9 +41,17 @@
 #ifndef NCURSESCPP_NCURSES_HPP_
 #define NCURSESCPP_NCURSES_HPP_
 
+#ifndef NCURSESCPP_WINDOW_HPP_
+#define NCCPP_NCURSES_DELAYED_IMPL
+#endif
+
 #include <vector>
 
+#ifndef NCCPP_WINDOW_NOIMPL
+#define NCCPP_WINDOW_NOIMPL
 #include "Window.hpp"
+#undef NCCPP_WINDOW_NOIMPL
+#endif
 #include "Color.hpp"
 
 namespace nccpp
@@ -113,7 +121,7 @@ class Ncurses : public Window
 	int use_default_colors();
 
 	short color_to_pair_number(Color const&);
-	int color_to_attr(Color const&);
+	attr_t color_to_attr(Color const&);
 	Color pair_number_to_color(short);
 	Color attr_to_color(attr_t);
 
@@ -137,8 +145,20 @@ class Ncurses : public Window
  * \exception errors::NcursesInit Thrown when ncurses can't be initialized.
  * \return A reference to the singleton.
  */
-Ncurses& ncurses();
+inline Ncurses& ncurses()
+{
+	static Ncurses nc{};
+	return nc;
+}
 
 } // namespace nccpp
+
+#ifdef NCCPP_NCURSES_DELAYED_IMPL
+#include "Subwindow.hpp"
+#include "Window.ipp"
+#undef NCCPP_NCURSES_DELAYED_IMPL
+#endif
+
+#include "Ncurses.ipp"
 
 #endif // Header guard

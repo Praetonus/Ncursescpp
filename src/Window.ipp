@@ -33,90 +33,48 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-/**
- * \file Subwindow.cpp
- * \brief Implementation file for the Subwindow class.
- */
-
-#include "Subwindow.hpp"
-
-#include <cassert>
+#ifndef NCURSESCPP_WINDOW_IPP_
+#define NCURSESCPP_WINDOW_IPP_
 
 namespace nccpp
 {
 
-Subwindow::Subwindow(Window& parent, WINDOW* subwin, Window::Key /*dummy*/)
-	: Window{subwin}, parent_{parent}
-{}
+#include <cassert>
 
 /**
- * \brief Get the parent of the subwindow.
+ * \brief Get the managed window.
  * 
- * \pre The Subwindow manages a ncurses window.
- * \return A reference to the parent.
+ * \pre The Window manages a ncurses window.
+ * \return The managed window.
  */
-Window& Subwindow::get_parent()
+inline WINDOW* Window::get_handle()
 {
-	assert(win_ && "Invalid subwindow");
-	return parent_;
+	assert(win_ && "Window doesn't manage any object");
+	return win_;
 }
 
 /**
- * \brief Call mvderwin for this subwindow.
+ * \brief Get an existing subwindow.
  * 
- * \param y,x Values to pass on to mvderwin.
- * \pre The Subwindow manages a ncurses window.
- * \return The result of the operation.
+ * \param index Index of the subwindow.
+ * \pre The Window manages a ncurses window.
+ * \pre *index* is a valid subwindow index.
+ * \return The subwindow.
  */
-int Subwindow::mvderwin(int y, int x)
+inline Subwindow& Window::get_subwindow(std::size_t index)
 {
-	assert(win_ && "Invalid subwindow");
-	return ::mvderwin(win_, y, x);
-}
-
-/**
- * \brief Call wsyncup for this subwindow.
- * 
- * \pre The Subwindow manages a ncurses window.
- */
-void Subwindow::syncup()
-{
-	assert(win_ && "Invalid subwindow");
-	wsyncup(win_);
-}
-
-/**
- * \brief Call syncok for this subwindow.
- * 
- * \param on Value to pass on to syncok.
- * \pre The Subwindow manages a ncurses window.
- */
-int Subwindow::syncok(bool on)
-{
-	assert(win_ && "Invalid subwindow");
-	return ::syncok(win_, on);
-}
-
-/**
- * \brief Call wcursyncup for this subwindow.
- * 
- * \pre The Subwindow manages a ncurses window.
- */
-void Subwindow::cursyncup()
-{
-	assert(win_ && "Invalid subwindow");
-	wcursyncup(win_);
-}
-
-/**
- * \brief Call wsyncdown for this subwindow.
- * 
- * \pre The Subwindow manages a ncurses window.
- */
-void Subwindow::syncdown()
-{
-	assert(win_ && "Invalid subwindow");
-	wsyncdown(win_);
+	assert(win_ && "Window doesn't manage any object");
+	assert(index < subwindows_.size() && subwindows_[index].win_ && "Invalid subwindow");
+	return subwindows_[index];
 }
 
 } // namespace nccpp
+
+#include "Window_appearance.ipp"
+#include "Window_attributes.ipp"
+#include "Window_input.ipp"
+#include "Window_misc.ipp"
+#include "Window_options.ipp"
+#include "Window_output.ipp"
+
+#endif // Header guard

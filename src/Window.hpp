@@ -236,4 +236,11 @@ class Window
 
 } // namespace nccpp
 
+#ifndef NCCPP_WINDOW_NOIMPL
+#include "Ncurses.hpp"
+#include "Subwindow.hpp"
+
+#include "Window.ipp"
+#endif
+
 #endif // Header guard

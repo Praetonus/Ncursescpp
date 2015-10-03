@@ -33,127 +33,197 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-#include "Window.hpp"
-
-#include <cassert>
+#ifndef NCURSESCPP_WINDOW_MISC_IPP_
+#define NCURSESCPP_WINDOW_MISC_IPP_
 
 namespace nccpp
 {
 
 /**
- * \brief Call wborder for this window.
+ * \brief Call wmove for this window.
  * 
- * \param ls,rs,ts,bs,tl,tr,bl,br Values to pass on to wborder.
+ * \param y,x New position.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::border(chtype ls, chtype rs, chtype ts, chtype bs,
-                     chtype tl, chtype tr, chtype bl, chtype br)
+inline int Window::move(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wborder(win_, ls, rs, ts, bs, tl, tr, bl, br);
+	return wmove(win_, y, x);
 }
 
 /**
- * \brief Call wbox for this window.
+ * \brief Call mvwin for this window.
  * 
- * \param vch,hch Values to pass on to wbox.
+ * \param y,x New position.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::box(chtype vch, chtype hch)
+inline int Window::mvwin(int y, int x)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::box(win_, vch, hch);
+	return ::mvwin(win_, y, x);
 }
 
 /**
- * \brief Call whline for this window.
+ * \brief Call werase for this window.
  * 
- * \param ch,n Values to pass on to whline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::hline(chtype ch, int n)
+inline int Window::erase()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return whline(win_, ch, n);
+	return werase(win_);
 }
 
 /**
- * \brief Call wvline for this window.
+ * \brief Call wclear for this window.
  * 
- * \param ch,n Values to pass on to wvline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::vline(chtype ch, int n)
+inline int Window::clear()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wvline(win_, ch, n);
+	return wclear(win_);
 }
 
 /**
- * \brief Call mvwhline for this window.
+ * \brief Call wclrtobot for this window.
  * 
- * \param y,x,ch,n Values to pass on to mvwhline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvhline(int y, int x, chtype ch, int n)
+inline int Window::clrtobot()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return (this->move)(y, x) == ERR ? ERR : (this->hline)(ch, n);
+	return wclrtobot(win_);
 }
 
 /**
- * \brief Call mvwvline for this window.
+ * \brief Call wclrtoeol for this window.
  * 
- * \param y,x,ch,n Values to pass on to mvwvline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvvline(int y, int x, chtype ch, int n)
+inline int Window::clrtoeol()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return (this->move)(y, x) == ERR ? ERR : (this->vline)(ch, n);
+	return wclrtoeol(win_);
 }
 
 /**
- * \brief Call wbkgdset for this window.
+ * \brief Call wrefresh for this window.
  * 
- * \param ch Value to pass on to wbkgdset.
- * \pre The Window manages a ncurses window.
- */
-void Window::bkgdset(int ch)
-{
-	assert(win_ && "Window doesn't manage any object");
-	wbkgdset(win_, static_cast<chtype>(ch));
-}
-
-/**
- * \brief Call wbkgd for this window.
- * 
- * \param ch Values to pass on to wbkgd.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::bkgd(int ch)
+inline int Window::refresh()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wbkgd(win_, static_cast<chtype>(ch));
+	return wrefresh(win_);
 }
 
 /**
- * \brief Call getbkgd for this window.
+ * \brief Call wnoutrefresh for this window.
  * 
  * \pre The Window manages a ncurses window.
- * \return The background character.
+ * \return The result of the operation.
  */
-chtype Window::getbkgd()
+inline int Window::outrefresh()
 {
 	assert(win_ && "Window doesn't manage any object");
-	return (::getbkgd)(win_);
+	return wnoutrefresh(win_);
+}
+
+/**
+ * \brief Call redrawwin for this window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::redraw()
+{
+	assert(win_ && "Window doesn't manage any object");
+	return redrawwin(win_);
+}
+
+/**
+ * \brief Call wredrawln for this window.
+ * 
+ * \param beg,num Values to pass on to wredrawln.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::redrawln(int beg, int num)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wredrawln(win_, beg, num);
+}
+
+/**
+ * \brief Call wscrl for this window.
+ * 
+ * \param n Value to pass on to wscrl.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::scroll(int n)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wscrl(win_, n);
+}
+
+/**
+ * \brief Call getyx for this window.
+ * 
+ * \param[out] y,x Result of the operation.
+ * \pre The Window manages a ncurses window.
+ */
+inline void Window::get_yx(int& y, int& x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	getyx(win_, y, x);
+}
+
+/**
+ * \brief Call getbegyx for this window.
+ * 
+ * \param[out] y,x Result of the operation.
+ * \pre The Window manages a ncurses window.
+ */
+inline void Window::get_begyx(int& y, int& x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	getbegyx(win_, y, x);
+}
+
+/**
+ * \brief Call getmaxyx for this window.
+ * 
+ * \param[out] y,x Result of the operation.
+ * \pre The Window manages a ncurses window.
+ */
+inline void Window::get_maxyx(int& y, int& x)
+{
+	assert(win_ && "Window doesn't manage any object");
+	getmaxyx(win_, y, x);
+}
+
+/**
+ * \brief Call wtouchln for this window.
+ * 
+ * \param start,count,changed Values to pass on to wtouchln.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::touchln(int start, int count, bool changed)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return wtouchln(win_, start, count, changed);
 }
 
 } // namespace nccpp
+
+#endif // Header guard

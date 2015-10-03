@@ -33,123 +33,128 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-#include "Window.hpp"
-#include "Ncurses.hpp"
-
-#include <cassert>
+#ifndef NCURSESCPP_WINDOW_APPEARANCE_IPP_
+#define NCURSESCPP_WINDOW_APPEARANCE_IPP_
 
 namespace nccpp
 {
 
 /**
- * \brief Call wattroff for this window.
+ * \brief Call wborder for this window.
  * 
- * \param a The attribute value.
+ * \param ls,rs,ts,bs,tl,tr,bl,br Values to pass on to wborder.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::attroff(int a)
+inline int Window::border(chtype ls, chtype rs, chtype ts, chtype bs,
+                     chtype tl, chtype tr, chtype bl, chtype br)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wattroff(win_, a);
+	return wborder(win_, ls, rs, ts, bs, tl, tr, bl, br);
 }
 
 /**
- * \brief Call wattron for this window.
+ * \brief Call wbox for this window.
  * 
- * \param a The attribute value.
+ * \param vch,hch Values to pass on to wbox.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::attron(int a)
+inline int Window::box(chtype vch, chtype hch)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wattron(win_, a);
+	return ::box(win_, vch, hch);
 }
 
 /**
- * \brief Call wattrset for this window.
+ * \brief Call whline for this window.
  * 
- * \param a The attribute value.
+ * \param ch,n Values to pass on to whline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::attrset(int a)
+inline int Window::hline(chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wattrset(win_, a);
+	return whline(win_, ch, n);
 }
 
 /**
- * \brief Get the attributes of the window.
+ * \brief Call wvline for this window.
  * 
- * \param[out] a Reference to store the attributes.
+ * \param ch,n Values to pass on to wvline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::attr_get(attr_t& a)
+inline int Window::vline(chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wattr_get(win_, &a, nullptr, nullptr);
+	return wvline(win_, ch, n);
 }
 
 /**
- * \brief Get the color of the window.
+ * \brief Call mvwhline for this window.
  * 
- * \param[out] c Reference to store the color.
+ * \param y,x,ch,n Values to pass on to mvwhline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::color_get(Color& c)
+inline int Window::mvhline(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	short pair_n{0};
-	if (wattr_get(win_, nullptr, &pair_n, nullptr) == ERR)
-		return ERR;
-	c = ncurses().pair_number_to_color(pair_n);
-	return OK;
+	return (this->move)(y, x) == ERR ? ERR : (this->hline)(ch, n);
 }
 
 /**
- * \brief Get the attributes and the color of the window.
+ * \brief Call mvwvline for this window.
  * 
- * \param[out] a Reference to store the attributes.
- * \param[out] c Reference to store the color.
+ * \param y,x,ch,n Values to pass on to mvwvline.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::attr_color_get(attr_t& a, Color& c)
+inline int Window::mvvline(int y, int x, chtype ch, int n)
 {
 	assert(win_ && "Window doesn't manage any object");
-	short pair_n{0};
-	if (wattr_get(win_, &a, &pair_n, nullptr) == ERR)
-		return ERR;
-	c = ncurses().pair_number_to_color(pair_n);
-	return OK;
+	return (this->move)(y, x) == ERR ? ERR : (this->vline)(ch, n);
 }
 
 /**
- * \brief Call wchgat for this window.
- * \param n,a,c Values to pass on to wchgat.
+ * \brief Call wbkgdset for this window.
+ * 
+ * \param ch Value to pass on to wbkgdset.
  * \pre The Window manages a ncurses window.
- * \return The result of the operation.
  */
-int Window::chgat(int n, attr_t a, Color c)
+inline void Window::bkgdset(int ch)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::wchgat(win_, n, a, ncurses().color_to_pair_number(c), nullptr);
+	wbkgdset(win_, static_cast<chtype>(ch));
 }
 
 /**
- * \brief Call mvwchgat for this window.
- * \param y,x,n,a,c Values to pass on to mvwchgat.
+ * \brief Call wbkgd for this window.
+ * 
+ * \param ch Values to pass on to wbkgd.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::mvchgat(int y, int x, int n, attr_t a, Color c)
+inline int Window::bkgd(int ch)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return (this->move)(y, x) == ERR ? ERR : (this->chgat)(n, a, c);
+	return wbkgd(win_, static_cast<chtype>(ch));
+}
+
+/**
+ * \brief Call getbkgd for this window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The background character.
+ */
+inline chtype Window::getbkgd()
+{
+	assert(win_ && "Window doesn't manage any object");
+	return (::getbkgd)(win_);
 }
 
 } // namespace nccpp
+
+#endif // Header guard

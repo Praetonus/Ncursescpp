@@ -38,13 +38,17 @@
  * \brief Implementation file for the Window class.
  */
 
+#define NCCPP_WINDOW_NOIMPL
 #include "Window.hpp"
-#include "Subwindow.hpp"
+#undef NCCPP_WINDOW_NOIMPL
 #include "Ncurses.hpp"
+#include "Subwindow.hpp"
 
 #include <cassert>
 
 #include "errors.hpp"
+
+#include "Window.ipp"
 
 namespace nccpp
 {
@@ -83,6 +87,7 @@ Window::Window(int nlines, int ncols, int begin_y, int begin_x)
 Window::Window(Window const& cp)
 	: win_{nullptr}, subwindows_{}
 {
+	subwindows_.reserve(cp.subwindows_.size());
 	if (cp.win_ && !(win_ = dupwin(cp.win_)))
 		throw errors::WindowInit{};
 	for (auto& subw : cp.subwindows_)
@@ -170,18 +175,6 @@ void Window::destroy()
 }
 
 /**
- * \brief Get the managed window.
- * 
- * \pre The Window manages a ncurses window.
- * \return The managed window.
- */
-WINDOW* Window::get_handle()
-{
-	assert(win_ && "Window doesn't manage any object");
-	return win_;
-}
-
-/**
  * \brief Create a new subwindow.
  * 
  * \param lines,cols,beg_y,beg_x Values to pass on to subwin.
@@ -217,21 +210,6 @@ std::size_t Window::add_subwindow(int lines, int cols, int beg_y, int beg_x)
 }
 
 /**
- * \brief Get an existing subwindow.
- * 
- * \param index Index of the subwindow.
- * \pre The Window manages a ncurses window.
- * \pre *index* is a valid subwindow index.
- * \return The subwindow.
- */
-Subwindow& Window::get_subwindow(std::size_t index)
-{
-	assert(win_ && "Window doesn't manage any object");
-	assert(index < subwindows_.size() && subwindows_[index].get_handle() && "Invalid subwindow");
-	return subwindows_[index];
-}
-
-/**
  * \brief Destroy a subwindow.
  * 
  * References obtained by calling get_subwindow(index) shouldn't be used after calling this function.
@@ -244,7 +222,7 @@ Subwindow& Window::get_subwindow(std::size_t index)
 void Window::delete_subwindow(std::size_t index)
 {
 	assert(win_ && "Window doesn't manage any object");
-	assert(index < subwindows_.size() && subwindows_[index].get_handle() && "Invalid subwindow");
+	assert(index < subwindows_.size() && subwindows_[index].win_ && "Invalid subwindow");
 	subwindows_[index].destroy();
 }
 

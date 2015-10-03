@@ -33,88 +33,125 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-#include "Window.hpp"
+#ifndef NCURSESCPP_WINDOW_ATTRIBUTES_IPP_
+#define NCURSESCPP_WINDOW_ATTRIBUTES_IPP_
 
-#include <cassert>
+#include "Color.hpp"
 
 namespace nccpp
 {
 
 /**
- * \brief Call keypad for this window.
+ * \brief Call wattroff for this window.
  * 
- * \param on Value to pass on to keypad.
+ * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::keypad(bool on)
+inline int Window::attroff(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::keypad(win_, on);
+	return wattroff(win_, a);
 }
 
 /**
- * \brief Call nodelay for this window.
+ * \brief Call wattron for this window.
  * 
- * \param on Value to pass on to nodelay.
+ * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::nodelay(bool on)
+inline int Window::attron(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::nodelay(win_, on);
+	return wattron(win_, a);
 }
 
 /**
- * \brief Call notimeout for this window.
+ * \brief Call wattrset for this window.
  * 
- * \param on Value to pass on to notimeout.
+ * \param a The attribute value.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::notimeout(bool on)
+inline int Window::attrset(int a)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::notimeout(win_, on);
+	return wattrset(win_, a);
 }
 
 /**
- * \brief Call timeout for this window.
+ * \brief Get the attributes of the window.
  * 
- * \param delay Value to pass on to timeout.
- * \pre The Window manages a ncurses window.
- */
-void Window::timeout(int delay)
-{
-	assert(win_ && "Window doesn't manage any object");
-	wtimeout(win_, delay);
-}
-
-/**
- * \brief Call clearok for this window.
- * 
- * \param on Value to pass on to clearok.
+ * \param[out] a Reference to store the attributes.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::clearok(bool on)
+inline int Window::attr_get(attr_t& a)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return ::clearok(win_, on);
+	return wattr_get(win_, &a, nullptr, nullptr);
 }
 
 /**
- * \brief Call wsetscrreg for this window.
+ * \brief Get the color of the window.
  * 
- * \param top,bot Value to pass on to wsetscrreg.
+ * \param[out] c Reference to store the color.
  * \pre The Window manages a ncurses window.
  * \return The result of the operation.
  */
-int Window::setscrreg(int top, int bot)
+inline int Window::color_get(Color& c)
 {
 	assert(win_ && "Window doesn't manage any object");
-	return wsetscrreg(win_, top, bot);
+	short pair_n{0};
+	if (wattr_get(win_, nullptr, &pair_n, nullptr) == ERR)
+		return ERR;
+	c = nccpp::ncurses().pair_number_to_color(pair_n);
+	return OK;
+}
+
+/**
+ * \brief Get the attributes and the color of the window.
+ * 
+ * \param[out] a Reference to store the attributes.
+ * \param[out] c Reference to store the color.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::attr_color_get(attr_t& a, Color& c)
+{
+	assert(win_ && "Window doesn't manage any object");
+	short pair_n{0};
+	if (wattr_get(win_, &a, &pair_n, nullptr) == ERR)
+		return ERR;
+	c = nccpp::ncurses().pair_number_to_color(pair_n);
+	return OK;
+}
+
+/**
+ * \brief Call wchgat for this window.
+ * \param n,a,c Values to pass on to wchgat.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::chgat(int n, attr_t a, Color c)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return ::wchgat(win_, n, a, nccpp::ncurses().color_to_pair_number(c), nullptr);
+}
+
+/**
+ * \brief Call mvwchgat for this window.
+ * \param y,x,n,a,c Values to pass on to mvwchgat.
+ * \pre The Window manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Window::mvchgat(int y, int x, int n, attr_t a, Color c)
+{
+	assert(win_ && "Window doesn't manage any object");
+	return (this->move)(y, x) == ERR ? ERR : (this->chgat)(n, a, c);
 }
 
 } // namespace nccpp
+
+#endif // Header guard

@@ -33,34 +33,84 @@
  * knowledge of the CeCILL-B license and that you accept its terms.
  *****/
 
-/**
- * \file Ncurses.cpp
- * \brief Implementation file for the Ncurses class.
- */
-
-#include "Ncurses.hpp"
+#ifndef NCURSESCPP_SUBWINDOW_IPP_
+#define NCURSESCPP_SUBWINDOW_IPP_
 
 #include <cassert>
-
-#include "errors.hpp"
 
 namespace nccpp
 {
 
-Ncurses::Ncurses()
-	: Window{initscr()}, registered_colors_{}, colors_initialized{false}
+/**
+ * \brief Get the parent of the subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ * \return A reference to the parent.
+ */
+inline Window& Subwindow::get_parent()
 {
-	if (!win_)
-		throw errors::NcursesInit{};
+	assert(win_ && "Invalid subwindow");
+	return parent_;
 }
 
-Ncurses::~Ncurses()
+/**
+ * \brief Call mvderwin for this subwindow.
+ * 
+ * \param y,x Values to pass on to mvderwin.
+ * \pre The Subwindow manages a ncurses window.
+ * \return The result of the operation.
+ */
+inline int Subwindow::mvderwin(int y, int x)
 {
-	endwin();
-	win_ = nullptr;
-#ifdef NO_LEAKS
-	_nc_freeall();
-#endif
+	assert(win_ && "Invalid subwindow");
+	return ::mvderwin(win_, y, x);
+}
+
+/**
+ * \brief Call wsyncup for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+inline void Subwindow::syncup()
+{
+	assert(win_ && "Invalid subwindow");
+	wsyncup(win_);
+}
+
+/**
+ * \brief Call syncok for this subwindow.
+ * 
+ * \param on Value to pass on to syncok.
+ * \pre The Subwindow manages a ncurses window.
+ */
+inline int Subwindow::syncok(bool on)
+{
+	assert(win_ && "Invalid subwindow");
+	return ::syncok(win_, on);
+}
+
+/**
+ * \brief Call wcursyncup for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+inline void Subwindow::cursyncup()
+{
+	assert(win_ && "Invalid subwindow");
+	wcursyncup(win_);
+}
+
+/**
+ * \brief Call wsyncdown for this subwindow.
+ * 
+ * \pre The Subwindow manages a ncurses window.
+ */
+inline void Subwindow::syncdown()
+{
+	assert(win_ && "Invalid subwindow");
+	wsyncdown(win_);
 }
 
 } // namespace nccpp
+
+#endif // Header guard

@@ -49,8 +49,9 @@ endif(BUILD_SHARED)
 
 file(GLOB_RECURSE source_files src/*.cpp)
 file(GLOB_RECURSE headers src/*.hpp)
+file(GLOB_RECURSE source_inline src/*.ipp)
 
 add_library(ncursescpp ${LIBRARY_TYPE} ${source_files})
 
 install(TARGETS ncursescpp DESTINATION lib)
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ncursescpp/)
+install(FILES ${headers} ${source_inline} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ncursescpp/)

@@ -41,7 +41,15 @@
 #ifndef NCURSESCPP_SUBWINDOW_HPP_
 #define NCURSESCPP_SUBWINDOW_HPP_
 
+#ifndef NCURSESCPP_WINDOW_HPP_
+#define NCCPP_SUBWIN_DELAYED_IMPL
+#endif
+
+#ifndef NCCPP_WINDOW_NOIMPL
+#define NCCPP_WINDOW_NOIMPL
 #include "Window.hpp"
+#undef NCCPP_WINDOW_NOIMPL
+#endif
 
 namespace nccpp
 {
@@ -53,7 +61,9 @@ class Subwindow : public Window
 {
 	public:
 	/// \cond NODOC
-	Subwindow(Window&, WINDOW*, Window::Key);
+	Subwindow(Window& parent, WINDOW* subwin, Window::Key /*dummy*/)
+		: Window{subwin}, parent_{parent}
+	{}
 
 	Subwindow(Subwindow const&) = delete;
 	Subwindow& operator=(Subwindow const&) = delete;
@@ -78,5 +88,13 @@ class Subwindow : public Window
 };
 
 } // namespace nccpp
+
+#ifdef NCCPP_SUBWIN_DELAYED_IMPL
+#include "Ncurses.hpp"
+#include "Window.ipp"
+#undef NCCPP_SUBWIN_DELAYED_IMPL
+#endif
+
+#include "Subwindow.ipp"
 
 #endif // Header guard
