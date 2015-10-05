@@ -391,11 +391,11 @@ inline WINDOW* Ncurses::newwin_(int nlines, int ncols, int begin_y, int begin_x,
 inline void Ncurses::start_color()
 {
 	assert(!is_exit_ && "Ncurses mode is off");
-	if (colors_initialized)
+	if (colors_initialized_)
 		return;
 	if (::start_color() == ERR)
 		throw errors::ColorInit{};
-	colors_initialized = true;
+	colors_initialized_ = true;
 }
 
 /**

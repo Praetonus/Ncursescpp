@@ -52,7 +52,7 @@ Ncurses::Ncurses()
 #ifndef NDEBUG
 	  windows_{}, is_exit_{false},
 #endif
-	  colors_initialized{false}
+	  colors_initialized_{false}
 {
 	if (!win_)
 		throw errors::NcursesInit{};

@@ -149,7 +149,7 @@ class Ncurses : public Window
 	std::vector<Window*> windows_;
 	bool is_exit_;
 #endif
-	bool colors_initialized;
+	bool colors_initialized_;
 
 	// Do not implement
 	void assign(WINDOW*);
