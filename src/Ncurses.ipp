@@ -44,6 +44,74 @@
 namespace nccpp
 {
 
+inline Ncurses::Ncurses()
+	: Window{initscr()}, registered_colors_{},
+#ifndef NDEBUG
+	  windows_{}, is_exit_{false},
+#endif
+	  colors_initialized_{false}
+{
+	if (!win_)
+		throw errors::NcursesInit{};
+}
+
+inline Ncurses::~Ncurses()
+{
+	endwin();
+	win_ = nullptr;
+#ifdef NO_LEAKS
+	_nc_freeall();
+#endif
+}
+
+#ifndef NDEBUG
+inline void Ncurses::register_window_(Window& new_win, Window::Key /*dummy*/)
+{
+	windows_.push_back(&new_win);
+}
+
+inline void Ncurses::unregister_window_(Window& win, Window::Key /*dummy*/)
+{
+	auto it = std::find(std::begin(windows_), std::end(windows_), &win);
+	assert(it != std::end(windows_));
+	windows_.erase(it);
+}
+#endif
+
+/**
+ * \brief Exit ncurses mode and restore normal terminal properties.
+ * 
+ * \pre %Ncurses mode is on.
+ */
+inline void Ncurses::exit_ncurses_mode()
+{
+	assert(!is_exit_ && "Ncurses mode is already off");
+#ifndef NDEBUG
+	for (auto elem : windows_)
+		elem->invalidate_for_exit_(Window::Key{});
+	invalidate_for_exit_(Key{});
+	is_exit_ = true;
+#endif
+	endwin();
+}
+
+/**
+ * \brief Restore ncurses mode after a call to exit_ncurses_mode().
+ * 
+ * \pre %Ncurses mode is off.
+ */
+inline void Ncurses::resume_ncurses_mode()
+{
+	assert(is_exit_ && "Ncurses mode is already on");
+#ifndef NDEBUG
+	for (auto elem : windows_)
+		elem->validate_for_resume_(Window::Key{});
+	validate_for_resume_(Key{});
+	is_exit_ = false;
+#endif
+	doupdate();
+}
+
 // Input options
 
 /**

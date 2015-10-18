@@ -67,7 +67,10 @@ class Base : public std::exception
 
 	virtual ~Base() = default;
 
-	char const* what() const noexcept override;
+	char const* what() const noexcept override
+	{
+		return "nccpp::errors::Base";
+	}
 };
 
 /**
@@ -83,7 +86,10 @@ class NcursesInit : public Base
 
 	virtual ~NcursesInit() = default;
 
-	char const* what() const noexcept override;
+	char const* what() const noexcept override
+	{
+		return "nccpp::errors::NcursesInit : Can't initialize ncuses, initscr() failed";
+	}
 };
 
 /**
@@ -99,7 +105,10 @@ class WindowInit : public Base
 
 	virtual ~WindowInit() = default;
 
-	char const* what() const noexcept override;
+	char const* what() const noexcept override
+	{
+		return "nccpp::errors::WindowInit : Can't create new window, newwin() failed";
+	}
 };
 
 /**
@@ -115,7 +124,10 @@ class ColorInit : public Base
 
 	virtual ~ColorInit() = default;
 
-	char const* what() const noexcept override;
+	char const* what() const noexcept override
+	{
+		return "nccpp::errors::ColorInit : Can't initialize colors, start_color() failed";
+	}
 };
 
 /**
@@ -124,14 +136,19 @@ class ColorInit : public Base
 class TooMuchColors : public Base
 {
 	public:
-	TooMuchColors(Color const&) noexcept;
+	TooMuchColors(Color const& c) noexcept
+		: color{c}
+	{}
 
 	TooMuchColors(TooMuchColors const&) noexcept = default;
 	TooMuchColors& operator=(TooMuchColors const&) noexcept = default;
 
 	virtual ~TooMuchColors() = default;
 
-	char const* what() const noexcept override;
+	char const* what() const noexcept override
+	{
+		return "nccpp::errors::TooMuchColors : Can't initialize new colors, init_pair failed";
+	}
 
 	Color const color; ///< The color that caused the error.
 };

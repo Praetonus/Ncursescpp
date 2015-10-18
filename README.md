@@ -18,7 +18,7 @@ Ncursescpp goal is to provide access to ncurses through an interface using C++ r
 
 ## Installing
 
-Installing ncursescpp requires a compiler conform to the C++11 standard and uses [CMake](http://www.cmake.org).
+Ncursescpp is a header-only library. You can use [CMake](http://www.cmake.org) to install, or copy the library files where you want. Using ncursescpp in a program requires a compiler supporting the C++11 standard.
 
 ## License
 
