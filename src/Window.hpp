@@ -93,6 +93,7 @@ class Window
 	void assign(WINDOW*);
 	void destroy();
 	WINDOW* get_handle();
+	WINDOW const* get_handle() const;
 
 	std::size_t add_subwindow(int, int, int, int);
 	Subwindow& get_subwindow(std::size_t);

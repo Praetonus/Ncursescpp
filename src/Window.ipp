@@ -54,6 +54,18 @@ inline WINDOW* Window::get_handle()
 }
 
 /**
+ * \brief Get the managed window.
+ * 
+ * \pre The Window manages a ncurses window.
+ * \return The managed window.
+ */
+inline WINDOW const* Window::get_handle() const
+{
+	assert(win_ && "Window doesn't manage any object");
+	return win_;
+}
+
+/**
  * \brief Get an existing subwindow.
  * 
  * \param index Index of the subwindow.
@@ -66,6 +78,42 @@ inline Subwindow& Window::get_subwindow(std::size_t index)
 	assert(win_ && "Window doesn't manage any object");
 	assert(index < subwindows_.size() && subwindows_[index].win_ && "Invalid subwindow");
 	return subwindows_[index];
+}
+
+/**
+ * \brief Call overlay for *src* and *dst*.
+ * 
+ * \param src,dst Values to pass on to overlay.
+ * \return The result of the operation.
+ */
+inline int overlay(Window const& src, Window& dst)
+{
+	return ::overlay(src.get_handle(), dst.get_handle());
+}
+
+/**
+ * \brief Call overwrite for *src* and *dst*.
+ * 
+ * \param src,dst Values to pass on to overwrite.
+ * \return The result of the operation.
+ */
+inline int overwrite(Window const& src, Window& dst)
+{
+	return ::overwrite(src.get_handle(), dst.get_handle());
+}
+
+/**
+ * \brief Call copywin for *src* and *dst*.
+ * 
+ * \param src,dst,sminrow,smincol,dminrow,dmincol,dmaxrow,dmaxcol,overlay Values to pass on to copywin.
+ * \return The result of the operation.
+ */
+inline int copywin(Window const& src, Window& dst,
+                   int sminrow, int smincol, int dminrow, int dmincol, int dmaxrow, int dmaxcol,
+                   bool overlay)
+{
+	return ::copywin(src.get_handle(), dst.get_handle(),
+	                 sminrow, smincol, dminrow, dmincol, dmaxrow, dmaxcol, overlay);
 }
 
 } // namespace nccpp
