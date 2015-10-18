@@ -157,14 +157,21 @@ Window& Window::operator=(Window const& cp)
 /**
  * \brief Move constructor.
  */
-Window::Window(Window&& mv) noexcept
+Window::Window(Window&& mv)
+#ifdef NDEBUG
+	noexcept
+#endif
 	: win_{mv.win_},
 #ifndef NDEBUG
-	  win_save_{nullptr},
+	  win_save_{mv.win_save_},
 #endif
 	  subwindows_{std::move(mv.subwindows_)}
 {
 	mv.win_ = nullptr;
+#ifndef NDEBUG
+	mv.win_save_ = nullptr;
+	ncurses().register_window_(*this, Key{});
+#endif
 }
 
 /**
@@ -176,8 +183,12 @@ Window& Window::operator=(Window&& mv) noexcept
 	{
 		destroy();
 		win_ = mv.win_;
-		subwindows_ = std::move(mv.subwindows_);
 		mv.win_ = nullptr;
+#ifndef NDEBUG
+		win_save_ = mv.win_save_;
+		mv.win_save_ = nullptr;
+#endif
+		subwindows_ = std::move(mv.subwindows_);
 	}
 	return *this;
 }
@@ -187,6 +198,10 @@ Window& Window::operator=(Window&& mv) noexcept
  */
 Window::~Window()
 {
+#ifndef NDEBUG
+	if (this != &ncurses())
+		ncurses().unregister_window_(*this, Key{});
+#endif
 	destroy();
 }
 
@@ -279,6 +294,7 @@ void Window::delete_subwindow(std::size_t index)
 	subwindows_[index].destroy();
 }
 
+#ifndef NDEBUG
 void Window::invalidate_for_exit_(Window::Key /*dummy*/)
 {
 	for (auto& elem : subwindows_)
@@ -294,5 +310,6 @@ void Window::validate_for_resume_(Window::Key /*dummy*/)
 	win_ = win_save_;
 	win_save_ = nullptr;
 }
+#endif
 
 } // namespace nccpp

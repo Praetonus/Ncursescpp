@@ -73,8 +73,12 @@ class Window
 	Window(Window const&);
 	Window& operator=(Window const&);
 
-	Window(Window&&) noexcept;
-	Window& operator=(Window&&) noexcept;
+	Window(Window&&)
+#ifdef NDEBUG
+		noexcept
+#endif
+		;
+	Window& operator=(Window&&)noexcept;
 
 	/// \cond NODOC
 	Window(Ncurses const&) = delete;

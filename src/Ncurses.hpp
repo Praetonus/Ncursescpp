@@ -126,6 +126,7 @@ class Ncurses : public Window
 	WINDOW* newwin_(int, int, int, int, Window::Key);
 #ifndef NDEBUG
 	void register_window_(Window&, Window::Key);
+	void unregister_window_(Window&, Window::Key);
 #endif
 	/// \endcond
 

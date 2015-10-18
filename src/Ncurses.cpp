@@ -72,6 +72,13 @@ void Ncurses::register_window_(Window& new_win, Window::Key /*dummy*/)
 {
 	windows_.push_back(&new_win);
 }
+
+void Ncurses::unregister_window_(Window& win, Window::Key /*dummy*/)
+{
+	auto it = std::find(std::begin(windows_), std::end(windows_), &win);
+	assert(it != std::end(windows_));
+	windows_.erase(it);
+}
 #endif
 
 /**
