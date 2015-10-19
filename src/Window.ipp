@@ -318,7 +318,8 @@ inline void Window::delete_subwindow(std::size_t index)
 {
 	assert(win_ && "Window doesn't manage any object");
 	assert(index < subwindows_.size() && subwindows_[index].win_ && "Invalid subwindow");
-	subwindows_[index].destroy();
+	subwindows_[index].~Subwindow();
+	new (&subwindows_[index]) Subwindow{*this, nullptr, Key{}};
 }
 
 #ifndef NDEBUG

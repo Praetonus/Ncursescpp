@@ -85,6 +85,9 @@ class Subwindow : public Window
 
 	private:
 	Window& parent_;
+
+	void assign(WINDOW*) override;
+	void destroy() override;
 };
 
 } // namespace nccpp

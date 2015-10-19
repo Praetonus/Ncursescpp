@@ -94,8 +94,8 @@ class Window
 
 	~Window();
 
-	void assign(WINDOW*);
-	void destroy();
+	virtual void assign(WINDOW*);
+	virtual void destroy();
 	WINDOW* get_handle();
 	WINDOW const* get_handle() const;
 

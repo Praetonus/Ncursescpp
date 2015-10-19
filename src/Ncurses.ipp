@@ -562,6 +562,17 @@ inline int Ncurses::init_color(short color, short r, short g, short b)
 	return ::init_color(color, r, g, b);
 }
 
+inline void Ncurses::assign(WINDOW*)
+{
+	assert(false && "Can't call nccpp::Ncurses::assign");
+}
+
+inline void Ncurses::destroy()
+{
+	assert(false && "Can't call nccpp::Ncurses::destroy");
+}
+
+
 } // namespace nccpp
 
 #endif // Header guard

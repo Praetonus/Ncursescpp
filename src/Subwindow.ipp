@@ -111,6 +111,16 @@ inline void Subwindow::syncdown()
 	wsyncdown(win_);
 }
 
+void Subwindow::assign(WINDOW*)
+{
+	assert(false && "Can't call nccpp::Subwindow::assign");
+}
+
+void Subwindow::destroy()
+{
+	assert(false && "Can't call nccpp::Subwindow::destroy");
+}
+
 } // namespace nccpp
 
 #endif // Header guard

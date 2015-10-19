@@ -152,10 +152,8 @@ class Ncurses : public Window
 #endif
 	bool colors_initialized_;
 
-	// Do not implement
-	void assign(WINDOW*);
-	WINDOW* release();
-	void destroy();
+	void assign(WINDOW*) override;
+	void destroy() override;
 };
 
 /**
