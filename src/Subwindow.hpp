@@ -49,6 +49,8 @@
 #define NCCPP_WINDOW_NOIMPL
 #include "Window.hpp"
 #undef NCCPP_WINDOW_NOIMPL
+#else
+#include "Window.hpp"
 #endif
 
 namespace nccpp
@@ -92,6 +94,7 @@ class Subwindow : public Window
 
 } // namespace nccpp
 
+#ifndef NCCPP_SUBWINDOW_NOIMPL
 #ifdef NCCPP_SUBWIN_DELAYED_IMPL
 #include "Ncurses.hpp"
 #include "Window.ipp"
@@ -99,5 +102,6 @@ class Subwindow : public Window
 #endif
 
 #include "Subwindow.ipp"
+#endif
 
 #endif // Header guard

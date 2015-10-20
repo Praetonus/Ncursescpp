@@ -51,7 +51,10 @@
 #define NCCPP_WINDOW_NOIMPL
 #include "Window.hpp"
 #undef NCCPP_WINDOW_NOIMPL
+#else
+#include "Window.hpp"
 #endif
+
 #include "Color.hpp"
 
 namespace nccpp
@@ -170,6 +173,7 @@ inline Ncurses& ncurses()
 
 } // namespace nccpp
 
+#ifndef NCCPP_NCURSES_NOIMPL
 #ifdef NCCPP_NCURSES_DELAYED_IMPL
 #include "Subwindow.hpp"
 #include "Window.ipp"
@@ -177,5 +181,6 @@ inline Ncurses& ncurses()
 #endif
 
 #include "Ncurses.ipp"
+#endif
 
 #endif // Header guard
