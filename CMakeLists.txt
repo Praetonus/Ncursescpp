@@ -42,37 +42,41 @@ file(GLOB_RECURSE source_inline src/*.ipp)
 
 install(FILES ${headers} ${source_inline} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ncursescpp/)
 
+find_package(Curses REQUIRED)
+
 add_library(ncursescpp INTERFACE)
 set_target_properties (ncursescpp PROPERTIES EXPORT_NAME ncursescpp)
 target_include_directories(ncursescpp INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
 )
+set_target_properties(ncursescpp PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${CURSES_INCLUDE_DIRS}"
+  INTERFACE_LINK_LIBRARIES "${CURSES_LIBRARIES}"
+)
 
 include (CMakePackageConfigHelpers)
 set(config_install_dir "share/cmake/${PROJECT_NAME}/")
 configure_package_config_file (
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ncursescppConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/ncursescppConfig.cmake
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ncursescpp-config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/ncursescpp-config.cmake
   INSTALL_DESTINATION ${config_install_dir}
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
-export (TARGETS ncursescpp NAMESPACE Ncursescpp:: FILE ncursescppTargets.cmake)
+export (TARGETS ncursescpp NAMESPACE ncursescpp:: FILE ncursescpp-targets.cmake)
 
 install(
   FILES 
-    ${CMAKE_CURRENT_BINARY_DIR}/ncursescppConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/ncursescpp-config.cmake
   DESTINATION ${config_install_dir}
 )
-install (TARGETS ncursescpp EXPORT ncursescppTargets)
-install(EXPORT ncursescppTargets
+install (TARGETS ncursescpp EXPORT ncursescpp-targets)
+install(EXPORT ncursescpp-targets
   FILE
-    ncursescppTargets.cmake
+    ncursescpp-targets.cmake
   NAMESPACE
-    Ncursescpp::
+    ncursescpp::
   DESTINATION
     ${config_install_dir}
 )
-
-
 
