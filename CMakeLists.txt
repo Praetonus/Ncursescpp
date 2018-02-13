@@ -33,7 +33,7 @@
  # knowledge of the CeCILL-B license and that you accept its terms.
  #####
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 project(ncursescpp)
 
@@ -41,3 +41,38 @@ file(GLOB_RECURSE headers src/*.hpp)
 file(GLOB_RECURSE source_inline src/*.ipp)
 
 install(FILES ${headers} ${source_inline} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/ncursescpp/)
+
+add_library(ncursescpp INTERFACE)
+set_target_properties (ncursescpp PROPERTIES EXPORT_NAME ncursescpp)
+target_include_directories(ncursescpp INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+)
+
+include (CMakePackageConfigHelpers)
+set(config_install_dir "share/cmake/${PROJECT_NAME}/")
+configure_package_config_file (
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ncursescppConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/ncursescppConfig.cmake
+  INSTALL_DESTINATION ${config_install_dir}
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+export (TARGETS ncursescpp NAMESPACE Ncursescpp:: FILE ncursescppTargets.cmake)
+
+install(
+  FILES 
+    ${CMAKE_CURRENT_BINARY_DIR}/ncursescppConfig.cmake
+  DESTINATION ${config_install_dir}
+)
+install (TARGETS ncursescpp EXPORT ncursescppTargets)
+install(EXPORT ncursescppTargets
+  FILE
+    ncursescppTargets.cmake
+  NAMESPACE
+    Ncursescpp::
+  DESTINATION
+    ${config_install_dir}
+)
+
+
+
