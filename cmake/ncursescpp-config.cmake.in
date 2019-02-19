@@ -1,6 +1,14 @@
 @PACKAGE_INIT@
-find_package(Curses REQUIRED)
+include(CMakeFindDependencyMacro)
+find_dependency(Curses)
+if (CURSES_FOUND AND NOT TARGET Curses::Curses)
+  add_library(Curses::Curses UNKNOWN IMPORTED)
+  set_target_properties(Curses::Curses PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${CURSES_INCLUDE_DIRS}"
+    IMPORTED_LOCATION ${CURSES_LIBRARY}
+    IMPORTED_LINK_INTERFACE_LIBRARIES "${CURSES_LIBRARIES}"
+    )
+endif()
 
-include ("${CMAKE_CURRENT_LIST_DIR}/ncursescpp-targets.cmake")
-set(ncursescpp_FOUND)
-
+check_required_components(@PROJECT_NAME@)
+include("${CMAKE_CURRENT_LIST_DIR}/@CMAKE_PROJECT_NAME@-targets.cmake")
